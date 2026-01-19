@@ -25,7 +25,7 @@ function convert() {
   document.getElementById("result").textContent = convertedValue;
 }
 
-// 🔄 Swap Units
+// Swap Units
 function swapUnits() {
   const from = document.getElementById("fromUnit");
   const to = document.getElementById("toUnit");
@@ -35,9 +35,4 @@ function swapUnits() {
   to.value = temp;
 
   convert();
-}
-
-// 🌗 Toggle Dark Mode
-function toggleDarkMode() {
-  document.body.classList.toggle("dark");
 }
