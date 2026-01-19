@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unit Converter</title>
+  <link rel="manifest" href="manifest.json">
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    body.dark {
+      background-color: #111;
+      color: #eee;
+    }
+
+    input, select {
+      padding: 10px;
+      font-size: 1rem;
+      margin: 5px 0;
+      width: 100%;
+      max-width: 300px;
+    }
+
+    body.dark input,
+    body.dark select {
+      background-color: #222;
+      color: #eee;
+      border: 1px solid #555;
+    }
+
+    button {
+      padding: 10px 15px;
+      margin: 10px 5px 10px 0;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+
+    #result {
+      margin-top: 20px;
+      font-size: 1.6rem;
+      font-weight: bold;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h1>Unit Converter</h1>
+
+  <!-- Dark Mode Button -->
+  <button id="darkModeToggle" onclick="toggleDarkMode()">Dark Mode</button>
+
+  <!-- Input -->
+  <input 
+    id="inputValue" 
+    type="number" 
+    placeholder="Enter value"
+    oninput="convert()"
+  >
+
+  <!-- Dropdowns -->
+  <select id="fromUnit" onchange="convert()">
+    <option value="cups">Cups</option>
+    <option value="ounces">Ounces</option>
+    <option value="tablespoons">Tablespoons</option>
+    <option value="teaspoons">Teaspoons</option>
+    <option value="pints">Pints</option>
+    <option value="quarts">Quarts</option>
+    <option value="gallons">Gallons</option>
+  </select>
+
+  <select id="toUnit" onchange="convert()">
+    <option value="cups">Cups</option>
+    <option value="ounces">Ounces</option>
+    <option value="tablespoons">Tablespoons</option>
+    <option value="teaspoons">Teaspoons</option>
+    <option value="pints">Pints</option>
+    <option value="quarts">Quarts</option>
+    <option value="gallons">Gallons</option>
+  </select>
+
+  <!-- Swap Button -->
+  <button onclick="swapUnits()">Swap Units</button>
+
+  <!-- Result -->
+  <div id="result"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
