@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Unit Converter</title>
   <link rel="manifest" href="manifest.json">
 </head>
@@ -10,25 +10,39 @@
 <body>
   <h1>Unit Converter</h1>
 
-  <input id="inputValue" type="number" placeholder="Enter value">
+  <input 
+    id="inputValue" 
+    type="number" 
+    placeholder="Enter value" 
+    oninput="convert()"
+  >
 
-  <select id="fromUnit">
-    <option value="meters">Meters</option>
-    <option value="feet">Feet</option>
+  <br><br>
+
+  <select id="fromUnit" onchange="convert()">
+    <option value="cups">Cups</option>
+    <option value="ounces">Ounces</option>
+    <option value="tablespoons">Tablespoons</option>
+    <option value="teaspoons">Teaspoons</option>
+    <option value="pints">Pints</option>
+    <option value="quarts">Quarts</option>
+    <option value="gallons">Gallons</option>
   </select>
 
-  <select id="toUnit">
-    <option value="meters">Meters</option>
-    <option value="feet">Feet</option>
+  <select id="toUnit" onchange="convert()">
+    <option value="cups">Cups</option>
+    <option value="ounces">Ounces</option>
+    <option value="tablespoons">Tablespoons</option>
+    <option value="teaspoons">Teaspoons</option>
+    <option value="pints">Pints</option>
+    <option value="quarts">Quarts</option>
+    <option value="gallons">Gallons</option>
   </select>
 
-  <p id="result"></p>
+  <br><br>
+
+  <div id="result" style="font-size: 1.5rem; font-weight: bold;"></div>
 
   <script src="script.js"></script>
 </body>
-<script>
-  if ("serviceWorker" in navigator) {
-    navigator.serviceWorker.register("service-worker.js");
-  }
-</script>
 </html>

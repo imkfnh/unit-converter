@@ -1,24 +1,25 @@
-const factors = {
-  meters: 1,
-  feet: 3.28084
+const conversionRates = {
+  teaspoons: 1,
+  tablespoons: 3,
+  ounces: 6,
+  cups: 48,
+  pints: 96,
+  quarts: 192,
+  gallons: 768
 };
 
 function convert() {
-  const value = parseFloat(document.getElementById("inputValue").value);
-  const from = document.getElementById("fromUnit").value;
-  const to = document.getElementById("toUnit").value;
+  const inputValue = parseFloat(document.getElementById("inputValue").value);
+  const fromUnit = document.getElementById("fromUnit").value;
+  const toUnit = document.getElementById("toUnit").value;
 
-  if (isNaN(value)) {
+  if (isNaN(inputValue)) {
     document.getElementById("result").textContent = "";
     return;
   }
 
-  const valueInMeters = value / factors[from];
-  const result = valueInMeters * factors[to];
+  const valueInTeaspoons = inputValue * conversionRates[fromUnit];
+  const convertedValue = valueInTeaspoons / conversionRates[toUnit];
 
-  document.getElementById("result").textContent = result.toFixed(4);
+  document.getElementById("result").textContent = convertedValue;
 }
-
-document.getElementById("inputValue").addEventListener("input", convert);
-document.getElementById("fromUnit").addEventListener("change", convert);
-document.getElementById("toUnit").addEventListener("change", convert);
