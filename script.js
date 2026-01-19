@@ -1,3 +1,4 @@
+// Conversion rates in teaspoons
 const conversionRates = {
   teaspoons: 1,
   tablespoons: 3,
@@ -22,4 +23,21 @@ function convert() {
   const convertedValue = valueInTeaspoons / conversionRates[toUnit];
 
   document.getElementById("result").textContent = convertedValue;
+}
+
+// Dark Mode Toggle
+function toggleDarkMode() {
+  document.body.classList.toggle("dark");
+}
+
+// Swap Units
+function swapUnits() {
+  const from = document.getElementById("fromUnit");
+  const to = document.getElementById("toUnit");
+
+  const temp = from.value;
+  from.value = to.value;
+  to.value = temp;
+
+  convert();
 }
