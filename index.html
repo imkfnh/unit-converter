@@ -10,55 +10,63 @@
     body {
       font-family: Arial, sans-serif;
       padding: 20px;
+      background-color: #002B60;
+      color: #72C7FC;
       transition: background 0.3s, color 0.3s;
     }
 
-    body.dark {
-      background-color: #111;
-      color: #eee;
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
     }
 
     input, select {
-      padding: 10px;
-      font-size: 1rem;
-      margin: 5px 0;
+      padding: 12px;
+      font-size: 1.1rem;
+      margin: 8px 0;
       width: 100%;
-      max-width: 300px;
-    }
-
-    body.dark input,
-    body.dark select {
-      background-color: #222;
-      color: #eee;
-      border: 1px solid #555;
+      max-width: 320px;
+      background-color: #02519C;
+      color: #72C7FC;
+      border: 1px solid #72C7FC;
+      border-radius: 6px;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
     }
 
     button {
-      padding: 10px 15px;
-      margin: 10px 5px 10px 0;
-      font-size: 1rem;
+      padding: 12px 18px;
+      margin: 12px auto;
+      font-size: 1.1rem;
       cursor: pointer;
+      background-color: #25396E;
+      color: #A0C9FF;
+      border: none;
+      border-radius: 6px;
+      display: block;
     }
 
     #result {
-      margin-top: 20px;
-      font-size: 1.6rem;
+      margin-top: 25px;
+      font-size: 2.4rem;
       font-weight: bold;
+      text-align: center;
+      color: #43B6FE;
     }
   </style>
 </head>
 
-<body>
+<body class="dark">
 
   <h1>Unit Converter</h1>
 
-  <!-- Dark Mode Button -->
-  <button id="darkModeToggle" onclick="toggleDarkMode()">Dark Mode</button>
-
-  <!-- Input -->
+  <!-- Input with proper iPhone numpad -->
   <input 
-    id="inputValue" 
-    type="number" 
+    id="inputValue"
+    type="text"
+    inputmode="decimal"
+    pattern="[0-9]*"
     placeholder="Enter value"
     oninput="convert()"
   >
@@ -90,6 +98,7 @@
   <!-- Result -->
   <div id="result"></div>
 
-  <script src="main.js"></script>
+  <!-- Load JS -->
+  <script src="main.js?v=3"></script>
 </body>
 </html>
