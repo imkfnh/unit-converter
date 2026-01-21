@@ -1,92 +1,103 @@
-/* ------------------------------
-   GLOBAL STYLES
------------------------------- */
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unit Converter</title>
+  <link rel="manifest" href="manifest.json">
 
-body {
-  font-family: Arial, sans-serif;
-  padding: 20px;
-  background-color: #002B60;
-  color: #72C7FC;
-  transition: background 0.3s, color 0.3s;
+  <style>
+    /* ------------------------------
+       GLOBAL STYLES
+    ------------------------------ */
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background-color: #002B60;
+      color: #72C7FC;
+      transition: background 0.3s, color 0.3s;
 
-  /* Space for fixed header */
-  padding-top: 130px;
-}
+      /* Space for fixed header */
+      padding-top: 130px;
+    }
 
-h1 {
-  text-align: center;
-  margin-bottom: 20px;
-}
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
 
-/* ------------------------------
-   INPUTS & SELECTS
------------------------------- */
+    /* ------------------------------
+       INPUTS & SELECTS
+    ------------------------------ */
+    input,
+    select {
+      padding: 12px;
+      font-size: 1.1rem;
+      margin: 8px 0;
+      width: 100%;
+      max-width: 320px;
+      background-color: #02519C;
+      color: #72C7FC;
+      border: 1px solid #72C7FC;
+      border-radius: 6px;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+    }
 
-input,
-select {
-  padding: 12px;
-  font-size: 1.1rem;
-  margin: 8px 0;
-  width: 100%;
-  max-width: 320px;
-  background-color: #02519C;
-  color: #72C7FC;
-  border: 1px solid #72C7FC;
-  border-radius: 6px;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-}
+    /* ------------------------------
+       BUTTONS
+    ------------------------------ */
+    button {
+      padding: 12px 18px;
+      margin: 12px auto;
+      font-size: 1.1rem;
+      cursor: pointer;
+      background-color: #25396E;
+      color: #A0C9FF;
+      border: none;
+      border-radius: 6px;
+      display: block;
+    }
 
-/* ------------------------------
-   BUTTONS
------------------------------- */
+    /* ------------------------------
+       RESULT DISPLAY
+    ------------------------------ */
+    #result {
+      margin-top: 25px;
+      font-size: 2.4rem;
+      font-weight: bold;
+      text-align: center;
+      color: #43B6FE;
+    }
 
-button {
-  padding: 12px 18px;
-  margin: 12px auto;
-  font-size: 1.1rem;
-  cursor: pointer;
-  background-color: #25396E;
-  color: #A0C9FF;
-  border: none;
-  border-radius: 6px;
-  display: block;
-}
+    /* ------------------------------
+       FIXED HEADER
+    ------------------------------ */
+    .app-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 120px;
+      background: #001A3D; /* fallback if no image */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.4);
+    }
 
-/* ------------------------------
-   RESULT DISPLAY
------------------------------- */
+    .header-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+  </style>
+</head>
 
-#result {
-  margin-top: 25px;
-  font-size: 2.4rem;
-  font-weight: bold;
-  text-align: center;
-  color: #43B6FE;
-}
+<body class="dark">
 
-/* ------------------------------
-   FIXED HEADER
------------------------------- */
-
-.app-header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 120px;
-  background: #001A3D; /* fallback if no image */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.4);
-}
-
-.header-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-bottom: 1px solid rgba(255,255,255,0.1);
-}
+  <!-- FIXED HEADER -->
+  <header class="app-header">
