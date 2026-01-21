@@ -101,3 +101,49 @@
 
   <!-- FIXED HEADER -->
   <header class="app-header">
+    <img src="header.jpg" alt="Header Image" class="header-img">
+  </header>
+
+  <h1>Unit Converter</h1>
+
+  <!-- Input with proper iPhone numpad -->
+  <input 
+    id="inputValue"
+    type="text"
+    inputmode="decimal"
+    pattern="[0-9]*"
+    placeholder="Enter value"
+    oninput="convert()"
+  >
+
+  <!-- Dropdowns -->
+  <select id="fromUnit" onchange="convert()">
+    <option value="cups">Cups</option>
+    <option value="ounces">Ounces</option>
+    <option value="tablespoons">Tablespoons</option>
+    <option value="teaspoons">Teaspoons</option>
+    <option value="pints">Pints</option>
+    <option value="quarts">Quarts</option>
+    <option value="gallons">Gallons</option>
+  </select>
+
+  <select id="toUnit" onchange="convert()">
+    <option value="cups">Cups</option>
+    <option value="ounces">Ounces</option>
+    <option value="tablespoons">Tablespoons</option>
+    <option value="teaspoons">Teaspoons</option>
+    <option value="pints">Pints</option>
+    <option value="quarts">Quarts</option>
+    <option value="gallons">Gallons</option>
+  </select>
+
+  <!-- Swap Button -->
+  <button onclick="swapUnits()">Swap Units</button>
+
+  <!-- Result -->
+  <div id="result"></div>
+
+  <!-- Load JS -->
+  <script src="main.js?v=3"></script>
+</body>
+</html>
