@@ -426,7 +426,10 @@ this.defaults = {
               mph: 1.60934,
               knots: 1.852
             };
-            return value * (spd[to] / spd[from]);
+// Convert from → km/h → to
+const kmhValue = value * spd[from];   // convert input to km/h
+return kmhValue / spd[to];            // convert km/h to target
+
           }
           case "length": {
   const len = {
@@ -659,3 +662,4 @@ this.categoryBtn.textContent = "Category";
   </script>
 </body>
 </html>
+
