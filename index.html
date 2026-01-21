@@ -72,10 +72,18 @@
       display: block;
       margin-left: auto;
       margin-right: auto;
+      transition: box-shadow 0.2s ease, transform 0.1s ease;
+    }
+
+    input:focus,
+    select:focus {
+      outline: none;
+      box-shadow: 0 0 12px rgba(114,199,252,0.7);
+      transform: translateY(-1px);
     }
 
     /* ------------------------------
-       iOS STYLE BUTTONS
+       iOS STYLE BUTTONS + HAPTIC
     ------------------------------ */
     button {
       width: 100%;
@@ -89,11 +97,12 @@
       border: none;
       border-radius: 14px;
       box-shadow: 0 4px 10px rgba(0,0,0,0.35);
-      transition: transform 0.15s ease, box-shadow 0.15s ease;
+      transition: transform 0.12s ease, box-shadow 0.12s ease;
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 10px;
+      cursor: pointer;
     }
 
     button:active {
@@ -107,8 +116,18 @@
       object-fit: contain;
     }
 
+    .haptic-tap {
+      animation: hapticTap 120ms ease-out;
+    }
+
+    @keyframes hapticTap {
+      0% { transform: scale(1); }
+      50% { transform: scale(0.95); }
+      100% { transform: scale(1); }
+    }
+
     /* ------------------------------
-       RESULT DISPLAY
+       RESULT DISPLAY + FADE-IN
     ------------------------------ */
     #result {
       margin-top: 25px;
@@ -116,6 +135,16 @@
       font-weight: bold;
       text-align: center;
       color: #43B6FE;
+      min-height: 2.4rem;
+    }
+
+    .result-updated {
+      animation: resultFade 0.25s ease-out;
+    }
+
+    @keyframes resultFade {
+      from { opacity: 0; transform: translateY(4px); }
+      to   { opacity: 1; transform: translateY(0); }
     }
 
     /* ------------------------------
@@ -215,9 +244,80 @@
     }
 
     .category-btn {
-      font-size: 1.25rem;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      font-size: 0.9rem;
       font-weight: 700;
       color: #E8F1FF;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+      background: linear-gradient(180deg, #3A5BA0, #2C447A);
+    }
+
+    /* ------------------------------
+       CATEGORY PICKER MODAL
+    ------------------------------ */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.45);
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      z-index: 2000;
+      transition: opacity 0.25s ease;
+    }
+
+    .modal-backdrop.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .modal-sheet {
+      width: 100%;
+      max-width: 420px;
+      background: #01356F;
+      padding: 25px;
+      border-radius: 22px 22px 0 0;
+      box-shadow: 0 -6px 20px rgba(0,0,0,0.4);
+      animation: slideUp 0.25s ease;
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(40px); opacity: 0; }
+      to   { transform: translateY(0); opacity: 1; }
+    }
+
+    .modal-sheet h2 {
+      text-align: center;
+      margin-bottom: 18px;
+      color: #E8F1FF;
+    }
+
+    .modal-options {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .modal-option-btn {
+      padding: 14px;
+      border-radius: 12px;
+      background: #02519C;
+      color: #E8F1FF;
+      font-size: 1.1rem;
+      text-align: center;
+      border: 1px solid rgba(255,255,255,0.15);
+      transition: background 0.2s, transform 0.1s;
+      cursor: pointer;
+    }
+
+    .modal-option-btn:active {
+      background: #013A78;
+      transform: scale(0.97);
     }
   </style>
 </head>
@@ -233,8 +333,6 @@
   <div class="card">
 
     <h1>Unit Converter</h1>
-
-    <select id="category"></select>
 
     <input 
       id="inputValue"
@@ -280,6 +378,14 @@
 
   </div>
 
+  <!-- CATEGORY PICKER MODAL -->
+  <div id="categoryModal" class="modal-backdrop hidden">
+    <div class="modal-sheet">
+      <h2>Select Category</h2>
+      <div id="categoryList" class="modal-options"></div>
+    </div>
+  </div>
+
   <script>
     /* ============================================================
        CLASS: ConverterEngine
@@ -290,7 +396,7 @@
           volume: ["cups", "ounces", "tablespoons", "teaspoons", "pints", "quarts", "gallons"],
           temperature: ["celsius", "fahrenheit"],
           weight: ["grams", "kilograms", "ounces", "pounds"],
-          speed: ["kmh", "mph"],
+          speed: ["kmh", "mph", "knots"],
           timezone: ["UTC", "MST", "CST", "EST", "PST"],
           length: ["cm", "m", "inches", "feet", "km", "miles"],
           currency: ["EUR", "USD", "GBP", "CAD", "AUD"]
@@ -346,9 +452,12 @@
             return value * (wt[to] / wt[from]);
 
           case "speed":
-            if (from === "kmh" && to === "mph") return value / 1.60934;
-            if (from === "mph" && to === "kmh") return value * 1.60934;
-            return value;
+            const spd = {
+              kmh: 1,
+              mph: 1.60934,
+              knots: 1.852
+            };
+            return value * (spd[to] / spd[from]);
 
           case "timezone":
             const tz = {
@@ -414,27 +523,85 @@
     }
 
     /* ============================================================
+       CLASS: CategoryModal
+    ============================================================ */
+    class CategoryModal {
+      constructor(uiBinder, engine) {
+        this.ui = uiBinder;
+        this.engine = engine;
+
+        this.modal = document.getElementById("categoryModal");
+        this.list = document.getElementById("categoryList");
+
+        this.buildOptions();
+        this.bindBackdrop();
+      }
+
+      buildOptions() {
+        const categories = Object.keys(this.engine.categories);
+
+        this.list.innerHTML = categories
+          .map(cat => `<div class="modal-option-btn" data-cat="${cat}">${cat}</div>`)
+          .join("");
+
+        this.list.querySelectorAll(".modal-option-btn").forEach(btn => {
+          btn.addEventListener("click", () => {
+            const selected = btn.dataset.cat;
+            this.ui.setCategory(selected);
+            this.hide();
+          });
+        });
+      }
+
+      bindBackdrop() {
+        this.modal.addEventListener("click", e => {
+          if (e.target === this.modal) this.hide();
+        });
+      }
+
+      show() {
+        this.modal.classList.remove("hidden");
+      }
+
+      hide() {
+        this.modal.classList.add("hidden");
+      }
+    }
+
+    /* ============================================================
        CLASS: ToolbarController
     ============================================================ */
     class ToolbarController {
-      constructor(themeManager) {
+      constructor(themeManager, modal) {
         this.themeManager = themeManager;
+        this.modal = modal;
       }
 
       bind() {
-        document.getElementById("modeBtn").addEventListener("click", () => {
+        const modeBtn = document.getElementById("modeBtn");
+        const themeBtn = document.getElementById("themeBtn");
+        const categoryBtn = document.getElementById("categoryBtn");
+
+        modeBtn.addEventListener("click", () => {
           this.themeManager.toggleDarkMode();
+          this.addHaptic(modeBtn);
         });
 
-        document.getElementById("themeBtn").addEventListener("click", () => {
+        themeBtn.addEventListener("click", () => {
           this.themeManager.cycleTheme();
+          this.addHaptic(themeBtn);
         });
 
-        document.getElementById("categoryBtn").addEventListener("click", () => {
-          const cat = document.getElementById("category");
-          cat.focus();
-          cat.scrollIntoView({ behavior: "smooth", block: "center" });
+        categoryBtn.addEventListener("click", () => {
+          this.modal.show();
+          this.addHaptic(categoryBtn);
         });
+      }
+
+      addHaptic(el) {
+        el.classList.remove("haptic-tap");
+        void el.offsetWidth; // force reflow
+        el.classList.add("haptic-tap");
       }
     }
 
@@ -445,44 +612,38 @@
       constructor(engine) {
         this.engine = engine;
 
-        this.categoryEl = document.getElementById("category");
         this.fromEl = document.getElementById("fromUnit");
         this.toEl = document.getElementById("toUnit");
         this.inputEl = document.getElementById("inputValue");
         this.resultEl = document.getElementById("result");
         this.swapBtn = document.getElementById("swapBtn");
+
+        this.currentCategory = "volume";
       }
 
       init() {
-        this.populateCategories();
-        this.setCategory("volume");
+        this.setCategory(this.currentCategory);
         this.bindEvents();
       }
 
-      populateCategories() {
-        this.categoryEl.innerHTML = Object.keys(this.engine.categories)
-          .map(cat => `<option value="${cat}">${cat}</option>`)
-          .join("");
-      }
-
       setCategory(category) {
+        this.currentCategory = category;
+
         const units = this.engine.getUnits(category);
         const defaults = this.engine.getDefaultUnits(category);
 
         this.fromEl.innerHTML = units.map(u => `<option value="${u}">${u}</option>`).join("");
         this.toEl.innerHTML = units.map(u => `<option value="${u}">${u}</option>`).join("");
 
-        this.fromEl.value = defaults[0];
-        this.toEl.value = defaults[1];
+        if (defaults.length === 2) {
+          this.fromEl.value = defaults[0];
+          this.toEl.value = defaults[1];
+        }
 
         this.updateResult();
       }
 
       bindEvents() {
-        this.categoryEl.addEventListener("change", () => {
-          this.setCategory(this.categoryEl.value);
-        });
-
         this.inputEl.addEventListener("input", () => this.updateResult());
         this.fromEl.addEventListener("change", () => this.updateResult());
         this.toEl.addEventListener("change", () => this.updateResult());
@@ -492,18 +653,32 @@
           this.fromEl.value = this.toEl.value;
           this.toEl.value = temp;
           this.updateResult();
+          this.addHaptic(this.swapBtn);
         });
       }
 
       updateResult() {
-        const category = this.categoryEl.value;
         const value = parseFloat(this.inputEl.value);
         const from = this.fromEl.value;
         const to = this.toEl.value;
 
-        const result = this.engine.convert(category, value, from, to);
+        const result = this.engine.convert(this.currentCategory, value, from, to);
 
-        this.resultEl.textContent = result === "" ? "" : result.toFixed(2);
+        if (result === "" || isNaN(result)) {
+          this.resultEl.textContent = "";
+          return;
+        }
+
+        this.resultEl.textContent = result.toFixed(2);
+        this.resultEl.classList.remove("result-updated");
+        void this.resultEl.offsetWidth;
+        this.resultEl.classList.add("result-updated");
+      }
+
+      addHaptic(el) {
+        el.classList.remove("haptic-tap");
+        void el.offsetWidth;
+        el.classList.add("haptic-tap");
       }
     }
 
@@ -514,7 +689,8 @@
       const engine = new ConverterEngine();
       const ui = new UIBinder(engine);
       const themeManager = new ThemeManager();
-      const toolbar = new ToolbarController(themeManager);
+      const modal = new CategoryModal(ui, engine);
+      const toolbar = new ToolbarController(themeManager, modal);
 
       ui.init();
       toolbar.bind();
