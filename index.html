@@ -204,4 +204,322 @@
     }
 
     .toolbar-btn:active {
-      transform
+      transform: scale(0.92);
+      background: rgba(255,255,255,0.1);
+    }
+
+    .toolbar-icon {
+      width: 26px;
+      height: 26px;
+      object-fit: contain;
+    }
+
+    .category-btn {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #E8F1FF;
+    }
+  </style>
+</head>
+
+<body class="dark">
+
+  <!-- FIXED HEADER -->
+  <header class="app-header">
+    <img src="header.jpg" alt="Header Image" class="header-img">
+  </header>
+
+  <!-- CARD -->
+  <div class="card">
+
+    <h1>Unit Converter</h1>
+
+    <select id="category"></select>
+
+    <input 
+      id="inputValue"
+      type="text"
+      inputmode="decimal"
+      pattern="[0-9]*"
+      placeholder="Enter value"
+    >
+
+    <select id="fromUnit"></select>
+    <select id="toUnit"></select>
+
+    <button id="swapBtn">
+      <img src="swap.png" class="btn-icon" onerror="this.style.display='none'; this.parentNode.textContent='swap';">
+      Swap Units
+    </button>
+
+    <div id="result"></div>
+
+  </div>
+
+  <!-- BOTTOM TOOLBAR -->
+  <div class="bottom-toolbar">
+
+    <div class="toolbar-left">
+
+      <button class="toolbar-btn" id="modeBtn">
+        <img src="mode.png" class="toolbar-icon"
+             onerror="this.style.display='none'; this.parentNode.textContent='mode';">
+      </button>
+
+      <button class="toolbar-btn" id="themeBtn">
+        <img src="theme.png" class="toolbar-icon"
+             onerror="this.style.display='none'; this.parentNode.textContent='theme';">
+      </button>
+
+    </div>
+
+    <button class="toolbar-btn category-btn" id="categoryBtn">
+      <img src="category.png" class="toolbar-icon"
+           onerror="this.style.display='none'; this.parentNode.textContent='category';">
+    </button>
+
+  </div>
+
+  <script>
+    /* ============================================================
+       CLASS: ConverterEngine
+    ============================================================ */
+    class ConverterEngine {
+      constructor() {
+        this.categories = {
+          volume: ["cups", "ounces", "tablespoons", "teaspoons", "pints", "quarts", "gallons"],
+          temperature: ["celsius", "fahrenheit"],
+          weight: ["grams", "kilograms", "ounces", "pounds"],
+          speed: ["kmh", "mph"],
+          timezone: ["UTC", "MST", "CST", "EST", "PST"],
+          length: ["cm", "m", "inches", "feet", "km", "miles"],
+          currency: ["EUR", "USD", "GBP", "CAD", "AUD"]
+        };
+
+        this.defaults = {
+          volume: ["tablespoons", "cups"],
+          temperature: ["celsius", "fahrenheit"],
+          weight: ["kilograms", "pounds"],
+          speed: ["kmh", "mph"],
+          timezone: ["UTC", "MST"],
+          length: ["cm", "inches"],
+          currency: ["EUR", "USD"]
+        };
+      }
+
+      getUnits(category) {
+        return this.categories[category] || [];
+      }
+
+      getDefaultUnits(category) {
+        return this.defaults[category] || [];
+      }
+
+      convert(category, value, from, to) {
+        if (isNaN(value)) return "";
+
+        switch (category) {
+          case "volume":
+            const vol = {
+              cups: 1,
+              ounces: 8,
+              tablespoons: 16,
+              teaspoons: 48,
+              pints: 0.5,
+              quarts: 0.25,
+              gallons: 0.0625
+            };
+            return value * (vol[to] / vol[from]);
+
+          case "temperature":
+            if (from === "celsius" && to === "fahrenheit") return value * 9/5 + 32;
+            if (from === "fahrenheit" && to === "celsius") return (value - 32) * 5/9;
+            return value;
+
+          case "weight":
+            const wt = {
+              grams: 1,
+              kilograms: 1000,
+              ounces: 28.3495,
+              pounds: 453.592
+            };
+            return value * (wt[to] / wt[from]);
+
+          case "speed":
+            if (from === "kmh" && to === "mph") return value / 1.60934;
+            if (from === "mph" && to === "kmh") return value * 1.60934;
+            return value;
+
+          case "timezone":
+            const tz = {
+              UTC: 0,
+              MST: -7,
+              CST: -6,
+              EST: -5,
+              PST: -8
+            };
+            return value + (tz[to] - tz[from]);
+
+          case "length":
+            const len = {
+              cm: 1,
+              m: 100,
+              inches: 2.54,
+              feet: 30.48,
+              km: 100000,
+              miles: 160934
+            };
+            return value * (len[to] / len[from]);
+
+          case "currency":
+            const rates = {
+              EUR: 1,
+              USD: 1.09,
+              GBP: 0.86,
+              CAD: 1.47,
+              AUD: 1.63
+            };
+            return value * (rates[to] / rates[from]);
+        }
+      }
+    }
+
+    /* ============================================================
+       CLASS: ThemeManager
+    ============================================================ */
+    class ThemeManager {
+      constructor() {
+        this.themeIndex = 0;
+        this.themes = [
+          { bg: "#002B60", card: "#01356F" },
+          { bg: "#003B4F", card: "#015C6F" },
+          { bg: "#2B004F", card: "#3A006F" }
+        ];
+      }
+
+      toggleDarkMode() {
+        document.body.classList.toggle("dark");
+      }
+
+      cycleTheme() {
+        this.themeIndex = (this.themeIndex + 1) % this.themes.length;
+
+        document.body.style.backgroundColor = this.themes[this.themeIndex].bg;
+
+        const card = document.querySelector(".card");
+        if (card) {
+          card.style.backgroundColor = this.themes[this.themeIndex].card;
+        }
+      }
+    }
+
+    /* ============================================================
+       CLASS: ToolbarController
+    ============================================================ */
+    class ToolbarController {
+      constructor(themeManager) {
+        this.themeManager = themeManager;
+      }
+
+      bind() {
+        document.getElementById("modeBtn").addEventListener("click", () => {
+          this.themeManager.toggleDarkMode();
+        });
+
+        document.getElementById("themeBtn").addEventListener("click", () => {
+          this.themeManager.cycleTheme();
+        });
+
+        document.getElementById("categoryBtn").addEventListener("click", () => {
+          const cat = document.getElementById("category");
+          cat.focus();
+          cat.scrollIntoView({ behavior: "smooth", block: "center" });
+        });
+      }
+    }
+
+    /* ============================================================
+       CLASS: UIBinder
+    ============================================================ */
+    class UIBinder {
+      constructor(engine) {
+        this.engine = engine;
+
+        this.categoryEl = document.getElementById("category");
+        this.fromEl = document.getElementById("fromUnit");
+        this.toEl = document.getElementById("toUnit");
+        this.inputEl = document.getElementById("inputValue");
+        this.resultEl = document.getElementById("result");
+        this.swapBtn = document.getElementById("swapBtn");
+      }
+
+      init() {
+        this.populateCategories();
+        this.setCategory("volume");
+        this.bindEvents();
+      }
+
+      populateCategories() {
+        this.categoryEl.innerHTML = Object.keys(this.engine.categories)
+          .map(cat => `<option value="${cat}">${cat}</option>`)
+          .join("");
+      }
+
+      setCategory(category) {
+        const units = this.engine.getUnits(category);
+        const defaults = this.engine.getDefaultUnits(category);
+
+        this.fromEl.innerHTML = units.map(u => `<option value="${u}">${u}</option>`).join("");
+        this.toEl.innerHTML = units.map(u => `<option value="${u}">${u}</option>`).join("");
+
+        this.fromEl.value = defaults[0];
+        this.toEl.value = defaults[1];
+
+        this.updateResult();
+      }
+
+      bindEvents() {
+        this.categoryEl.addEventListener("change", () => {
+          this.setCategory(this.categoryEl.value);
+        });
+
+        this.inputEl.addEventListener("input", () => this.updateResult());
+        this.fromEl.addEventListener("change", () => this.updateResult());
+        this.toEl.addEventListener("change", () => this.updateResult());
+
+        this.swapBtn.addEventListener("click", () => {
+          const temp = this.fromEl.value;
+          this.fromEl.value = this.toEl.value;
+          this.toEl.value = temp;
+          this.updateResult();
+        });
+      }
+
+      updateResult() {
+        const category = this.categoryEl.value;
+        const value = parseFloat(this.inputEl.value);
+        const from = this.fromEl.value;
+        const to = this.toEl.value;
+
+        const result = this.engine.convert(category, value, from, to);
+
+        this.resultEl.textContent = result === "" ? "" : result.toFixed(2);
+      }
+    }
+
+    /* ============================================================
+       APP INITIALIZATION
+    ============================================================ */
+    window.addEventListener("DOMContentLoaded", () => {
+      const engine = new ConverterEngine();
+      const ui = new UIBinder(engine);
+      const themeManager = new ThemeManager();
+      const toolbar = new ToolbarController(themeManager);
+
+      ui.init();
+      toolbar.bind();
+    });
+  </script>
+
+</body>
+</html>
