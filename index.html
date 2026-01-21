@@ -80,7 +80,7 @@
       left: 0;
       width: 100%;
       height: 120px;
-      background: #001A3D; /* fallback if no image */
+      background: #001A3D;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -94,6 +94,30 @@
       object-fit: cover;
       border-bottom: 1px solid rgba(255,255,255,0.1);
     }
+
+    /* ------------------------------
+       CARD LAYOUT
+    ------------------------------ */
+    .card {
+      background: #01356F;
+      padding: 25px 20px;
+      border-radius: 16px;
+      max-width: 380px;
+      margin: 0 auto;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.35);
+      border: 1px solid rgba(255,255,255,0.08);
+
+      opacity: 0;
+      transform: translateY(10px);
+      animation: cardFade 0.4s ease forwards;
+    }
+
+    @keyframes cardFade {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
   </style>
 </head>
 
@@ -104,46 +128,46 @@
     <img src="header.jpg" alt="Header Image" class="header-img">
   </header>
 
-  <h1>Unit Converter</h1>
+  <!-- CARD LAYOUT WRAPPER -->
+  <div class="card">
 
-  <!-- Input with proper iPhone numpad -->
-  <input 
-    id="inputValue"
-    type="text"
-    inputmode="decimal"
-    pattern="[0-9]*"
-    placeholder="Enter value"
-    oninput="convert()"
-  >
+    <h1>Unit Converter</h1>
 
-  <!-- Dropdowns -->
-  <select id="fromUnit" onchange="convert()">
-    <option value="cups">Cups</option>
-    <option value="ounces">Ounces</option>
-    <option value="tablespoons">Tablespoons</option>
-    <option value="teaspoons">Teaspoons</option>
-    <option value="pints">Pints</option>
-    <option value="quarts">Quarts</option>
-    <option value="gallons">Gallons</option>
-  </select>
+    <input 
+      id="inputValue"
+      type="text"
+      inputmode="decimal"
+      pattern="[0-9]*"
+      placeholder="Enter value"
+      oninput="convert()"
+    >
 
-  <select id="toUnit" onchange="convert()">
-    <option value="cups">Cups</option>
-    <option value="ounces">Ounces</option>
-    <option value="tablespoons">Tablespoons</option>
-    <option value="teaspoons">Teaspoons</option>
-    <option value="pints">Pints</option>
-    <option value="quarts">Quarts</option>
-    <option value="gallons">Gallons</option>
-  </select>
+    <select id="fromUnit" onchange="convert()">
+      <option value="cups">Cups</option>
+      <option value="ounces">Ounces</option>
+      <option value="tablespoons">Tablespoons</option>
+      <option value="teaspoons">Teaspoons</option>
+      <option value="pints">Pints</option>
+      <option value="quarts">Quarts</option>
+      <option value="gallons">Gallons</option>
+    </select>
 
-  <!-- Swap Button -->
-  <button onclick="swapUnits()">Swap Units</button>
+    <select id="toUnit" onchange="convert()">
+      <option value="cups">Cups</option>
+      <option value="ounces">Ounces</option>
+      <option value="tablespoons">Tablespoons</option>
+      <option value="teaspoons">Teaspoons</option>
+      <option value="pints">Pints</option>
+      <option value="quarts">Quarts</option>
+      <option value="gallons">Gallons</option>
+    </select>
 
-  <!-- Result -->
-  <div id="result"></div>
+    <button onclick="swapUnits()">Swap Units</button>
 
-  <!-- Load JS -->
+    <div id="result"></div>
+
+  </div>
+
   <script src="main.js?v=3"></script>
 </body>
 </html>
