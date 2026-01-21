@@ -307,7 +307,20 @@
       inches: "inches",
       feet: "feet",
       km: "kilometers",
-      miles: "miles"
+      miles: "miles",
+      
+      UTC: "UTC",
+      MST: "Mountain Standard Time",
+      CST: "Central Standard Time",
+      EST: "Eastern Standard Time",
+      PST: "Pacific Standard Time",
+      
+      EUR: "Euro",
+      USD: "US Dollar",
+      GBP: "British Pound",
+      CAD: "Canadian Dollar",
+      AUD: "Australian Dollar"
+
     };
 
     const prettyUnits = {
@@ -331,25 +344,44 @@
       inches: "in",
       feet: "ft",
       km: "km",
-      miles: "mi"
+      miles: "mi",
+      
+      UTC: "UTC",
+      MST: "MST",
+      CST: "CST",
+      EST: "EST",
+      PST: "PST",
+      
+      EUR: "EUR",
+      USD: "USD",
+      GBP: "GBP",
+      CAD: "CAD",
+      AUD: "AUD"
+  
     };
 
     class ConverterEngine {
       constructor() {
         this.categories = {
-          volume: ["tablespoons", "teaspoons", "cups", "ounces", "pints", "quarts", "gallons"],
-          temperature: ["celsius", "fahrenheit"],
-          weight: ["grams", "kilograms", "ounces", "pounds"],
-          speed: ["kmh", "mph", "knots"],
-          length: ["cm", "m", "inches", "feet", "km", "miles"]
-        };
-        this.defaults = {
-          volume: ["tablespoons", "cups"],
-          temperature: ["celsius", "fahrenheit"],
-          weight: ["kilograms", "pounds"],
-          speed: ["kmh", "mph"],
-          length: ["cm", "inches"]
-        };
+  volume: ["tablespoons", "teaspoons", "cups", "ounces", "pints", "quarts", "gallons"],
+  temperature: ["celsius", "fahrenheit"],
+  weight: ["grams", "kilograms", "ounces", "pounds"],
+  speed: ["kmh", "mph", "knots"],
+  timezone: ["UTC", "MST", "CST", "EST", "PST"],
+  length: ["cm", "m", "inches", "feet", "km", "miles"],
+  currency: ["EUR", "USD", "GBP", "CAD", "AUD"]
+};
+
+this.defaults = {
+  volume: ["tablespoons", "cups"],
+  temperature: ["celsius", "fahrenheit"],
+  weight: ["kilograms", "pounds"],
+  speed: ["kmh", "mph"],
+  timezone: ["UTC", "MST"],
+  length: ["cm", "inches"],
+  currency: ["EUR", "USD"]
+};
+
       }
       getCategories() {
         return Object.keys(this.categories);
@@ -397,18 +429,42 @@
             return value * (spd[to] / spd[from]);
           }
           case "length": {
-            const len = {
-              cm: 0.01,
-              m: 1,
-              inches: 0.0254,
-              feet: 0.3048,
-              km: 1000,
-              miles: 1609.34
-            };
-            return value * (len[from] ? len[from] : 1) / (len[to] ? len[to] : 1);
-          }
-          default:
-            return value;
+  const len = {
+    cm: 0.01,
+    m: 1,
+    inches: 0.0254,
+    feet: 0.3048,
+    km: 1000,
+    miles: 1609.34
+  };
+  return value * (len[from] ? len[from] : 1) / (len[to] ? len[to] : 1);
+}
+
+case "timezone": {
+  const offsets = {
+    UTC: 0,
+    MST: -7,
+    CST: -6,
+    EST: -5,
+    PST: -8
+  };
+  return value + (offsets[to] - offsets[from]);
+}
+
+case "currency": {
+  const rates = {
+    EUR: 1.0,
+    USD: 1.08,
+    GBP: 0.86,
+    CAD: 1.47,
+    AUD: 1.62
+  };
+  return value * (rates[to] / rates[from]);
+}
+
+default:
+  return value;
+
         }
       }
     }
@@ -552,9 +608,11 @@ if (this.currentCategory === "volume") {
       populateCategoryModal() {
         const cats = this.engine.getCategories();
         this.categoryList.innerHTML = cats.map(c => `
-          <button class="modal-option-btn" data-cat="${c}">
-            ${c.charAt(0).toUpperCase() + c.slice(1)}
-          </button>
+        <button class="modal-option-btn" data-cat="${c}">
+          <img class="cat-icon" src="icons/${c}.png" onerror="this.style.display='none'">
+      ${c.charAt(0).toUpperCase() + c.slice(1)}
+  </button>
+  
         `).join("");
         this.categoryList.addEventListener("click", (e) => {
           const btn = e.target.closest(".modal-option-btn");
