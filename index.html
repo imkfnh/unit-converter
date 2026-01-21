@@ -7,9 +7,9 @@
   <link rel="manifest" href="manifest.json">
 
   <style>
-    /* ------------------------------
+    /* ============================================================
        GLOBAL STYLES
-    ------------------------------ */
+    ============================================================ */
     body {
       font-family: Arial, sans-serif;
       padding: 20px;
@@ -25,9 +25,9 @@
       margin-bottom: 20px;
     }
 
-    /* ------------------------------
+    /* ============================================================
        DARK MODE
-    ------------------------------ */
+    ============================================================ */
     body.dark {
       background-color: #0A1A33;
       color: #CFE8FF;
@@ -55,9 +55,9 @@
       border-top-color: rgba(255,255,255,0.2);
     }
 
-    /* ------------------------------
+    /* ============================================================
        INPUTS & SELECTS
-    ------------------------------ */
+    ============================================================ */
     input,
     select {
       padding: 12px;
@@ -73,18 +73,19 @@
       margin-left: auto;
       margin-right: auto;
       transition: box-shadow 0.2s ease, transform 0.1s ease;
+      text-align-last: center;
     }
 
     input:focus,
     select:focus {
       outline: none;
       box-shadow: 0 0 12px rgba(114,199,252,0.7);
-      transform: translateY(-1px);
+      transform: scale(1.03);
     }
 
-    /* ------------------------------
-       iOS STYLE BUTTONS + HAPTIC
-    ------------------------------ */
+    /* ============================================================
+       BUTTONS + HAPTIC ANIMATION
+    ============================================================ */
     button {
       width: 100%;
       max-width: 320px;
@@ -110,32 +111,48 @@
       box-shadow: 0 2px 6px rgba(0,0,0,0.25);
     }
 
-    .btn-icon {
-      width: 22px;
-      height: 22px;
-      object-fit: contain;
-    }
-
     .haptic-tap {
       animation: hapticTap 120ms ease-out;
     }
 
     @keyframes hapticTap {
       0% { transform: scale(1); }
-      50% { transform: scale(0.95); }
+      40% { transform: scale(0.94); }
       100% { transform: scale(1); }
     }
 
-    /* ------------------------------
-       RESULT DISPLAY + FADE-IN
-    ------------------------------ */
+    /* ============================================================
+       RESULT BOX (GLASSMORPHIC)
+    ============================================================ */
+    .result-box {
+      margin: 50px auto;
+      padding: 24px;
+      width: 80%;
+      max-width: 320px;
+
+      background: rgba(0,0,0,0.5);
+      backdrop-filter: blur(50px);
+      -webkit-backdrop-filter: blur(50px);
+
+      border-radius: 22px;
+      border: 1px solid rgba(255,255,255,0.25);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.45);
+
+      text-align: center;
+      animation: fadeIn 0.4s ease;
+    }
+
     #result {
-      margin-top: 25px;
       font-size: 2.4rem;
       font-weight: bold;
-      text-align: center;
-      color: #43B6FE;
       min-height: 2.4rem;
+    }
+
+    .result-gradient {
+      background: linear-gradient(180deg, #A0C9FF 0%, #43B6FE 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
 
     .result-updated {
@@ -147,9 +164,17 @@
       to   { opacity: 1; transform: translateY(0); }
     }
 
-    /* ------------------------------
+    .fraction-line {
+      margin-top: 6px;
+      text-align: center;
+      font-size: 1.2rem;
+      color: #A8D9FF;
+      opacity: 0.9;
+    }
+
+    /* ============================================================
        FIXED HEADER
-    ------------------------------ */
+    ============================================================ */
     .app-header {
       position: fixed;
       top: 0;
@@ -171,9 +196,9 @@
       border-bottom: 1px solid rgba(255,255,255,0.1);
     }
 
-    /* ------------------------------
+    /* ============================================================
        CARD LAYOUT
-    ------------------------------ */
+    ============================================================ */
     .card {
       background: #01356F;
       padding: 25px 20px;
@@ -194,9 +219,9 @@
       }
     }
 
-    /* ------------------------------
+    /* ============================================================
        BOTTOM TOOLBAR
-    ------------------------------ */
+    ============================================================ */
     .bottom-toolbar {
       position: fixed;
       bottom: 0;
@@ -237,29 +262,20 @@
       background: rgba(255,255,255,0.1);
     }
 
-    .toolbar-icon {
-      width: 26px;
-      height: 26px;
-      object-fit: contain;
-    }
-
     .category-btn {
       width: 60px;
       height: 60px;
-      border-radius: 50%;
-      font-size: 0.9rem;
-      font-weight: 700;
-      color: #E8F1FF;
+      border-radius: 18px;
+      background: linear-gradient(180deg, #3A5BA0, #2C447A);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
-      background: linear-gradient(180deg, #3A5BA0, #2C447A);
     }
 
-    /* ------------------------------
+    /* ============================================================
        CATEGORY PICKER MODAL
-    ------------------------------ */
+    ============================================================ */
     .modal-backdrop {
       position: fixed;
       inset: 0;
@@ -329,7 +345,7 @@
     <img src="header.jpg" alt="Header Image" class="header-img">
   </header>
 
-  <!-- CARD -->
+  <!-- MAIN CARD -->
   <div class="card">
 
     <h1>Unit Converter</h1>
@@ -345,12 +361,19 @@
     <select id="fromUnit"></select>
     <select id="toUnit"></select>
 
+    <!-- GLASS RESULT BOX -->
+    <div class="result-box">
+      <div id="result" class="result-gradient"></div>
+      <div id="fractionResult" class="fraction-line"></div>
+    </div>
+
     <button id="swapBtn">
-      <img src="swap.png" class="btn-icon" onerror="this.style.display='none'; this.parentNode.textContent='swap';">
       Swap Units
     </button>
 
-    <div id="result"></div>
+    <button id="roundBtn" style="display:none;">
+      Round
+    </button>
 
   </div>
 
@@ -359,21 +382,13 @@
 
     <div class="toolbar-left">
 
-      <button class="toolbar-btn" id="modeBtn">
-        <img src="mode.png" class="toolbar-icon"
-             onerror="this.style.display='none'; this.parentNode.textContent='mode';">
-      </button>
-
-      <button class="toolbar-btn" id="themeBtn">
-        <img src="theme.png" class="toolbar-icon"
-             onerror="this.style.display='none'; this.parentNode.textContent='theme';">
-      </button>
+      <button class="toolbar-btn" id="modeBtn">Mode</button>
+      <button class="toolbar-btn" id="themeBtn">Theme</button>
 
     </div>
 
     <button class="toolbar-btn category-btn" id="categoryBtn">
-      <img src="category.png" class="toolbar-icon"
-           onerror="this.style.display='none'; this.parentNode.textContent='category';">
+      Cat
     </button>
 
   </div>
@@ -387,6 +402,92 @@
   </div>
 
   <script>
+    /* ============================================================
+       UNIT LABELS (for dropdowns)
+    ============================================================ */
+    const unitLabels = {
+      cups: "cups",
+      ounces: "ounces",
+      tablespoons: "tablespoons",
+      teaspoons: "teaspoons",
+      pints: "pints",
+      quarts: "quarts",
+      gallons: "gallons",
+
+      celsius: "Celsius",
+      fahrenheit: "Fahrenheit",
+
+      grams: "grams",
+      kilograms: "kilograms",
+      pounds: "pounds",
+
+      kmh: "kilometers per hour",
+      mph: "miles per hour",
+      knots: "knots",
+
+      cm: "centimeters",
+      m: "meters",
+      inches: "inches",
+      feet: "feet",
+      km: "kilometers",
+      miles: "miles",
+
+      EUR: "Euro",
+      USD: "US Dollar",
+      GBP: "British Pound",
+      CAD: "Canadian Dollar",
+      AUD: "Australian Dollar",
+
+      UTC: "UTC",
+      MST: "Mountain Standard Time",
+      CST: "Central Standard Time",
+      EST: "Eastern Standard Time",
+      PST: "Pacific Standard Time"
+    };
+
+    /* ============================================================
+       PRETTY UNIT ABBREVIATIONS (for result)
+    ============================================================ */
+    const prettyUnits = {
+      cups: "cups",
+      ounces: "oz",
+      tablespoons: "tbsp",
+      teaspoons: "tsp",
+      pints: "pt",
+      quarts: "qt",
+      gallons: "gal",
+
+      celsius: "°C",
+      fahrenheit: "°F",
+
+      grams: "g",
+      kilograms: "kg",
+      pounds: "lb",
+
+      kmh: "km/h",
+      mph: "mph",
+      knots: "kn",
+
+      cm: "cm",
+      m: "m",
+      inches: "in",
+      feet: "ft",
+      km: "km",
+      miles: "mi",
+
+      EUR: "EUR",
+      USD: "USD",
+      GBP: "GBP",
+      CAD: "CAD",
+      AUD: "AUD",
+
+      UTC: "UTC",
+      MST: "MST",
+      CST: "CST",
+      EST: "EST",
+      PST: "PST"
+    };
+
     /* ============================================================
        CLASS: ConverterEngine
     ============================================================ */
@@ -464,238 +565,4 @@
               UTC: 0,
               MST: -7,
               CST: -6,
-              EST: -5,
-              PST: -8
-            };
-            return value + (tz[to] - tz[from]);
-
-          case "length":
-            const len = {
-              cm: 1,
-              m: 100,
-              inches: 2.54,
-              feet: 30.48,
-              km: 100000,
-              miles: 160934
-            };
-            return value * (len[to] / len[from]);
-
-          case "currency":
-            const rates = {
-              EUR: 1,
-              USD: 1.09,
-              GBP: 0.86,
-              CAD: 1.47,
-              AUD: 1.63
-            };
-            return value * (rates[to] / rates[from]);
-        }
-      }
-    }
-
-    /* ============================================================
-       CLASS: ThemeManager
-    ============================================================ */
-    class ThemeManager {
-      constructor() {
-        this.themeIndex = 0;
-        this.themes = [
-          { bg: "#002B60", card: "#01356F" },
-          { bg: "#003B4F", card: "#015C6F" },
-          { bg: "#2B004F", card: "#3A006F" }
-        ];
-      }
-
-      toggleDarkMode() {
-        document.body.classList.toggle("dark");
-      }
-
-      cycleTheme() {
-        this.themeIndex = (this.themeIndex + 1) % this.themes.length;
-
-        document.body.style.backgroundColor = this.themes[this.themeIndex].bg;
-
-        const card = document.querySelector(".card");
-        if (card) {
-          card.style.backgroundColor = this.themes[this.themeIndex].card;
-        }
-      }
-    }
-
-    /* ============================================================
-       CLASS: CategoryModal
-    ============================================================ */
-    class CategoryModal {
-      constructor(uiBinder, engine) {
-        this.ui = uiBinder;
-        this.engine = engine;
-
-        this.modal = document.getElementById("categoryModal");
-        this.list = document.getElementById("categoryList");
-
-        this.buildOptions();
-        this.bindBackdrop();
-      }
-
-      buildOptions() {
-        const categories = Object.keys(this.engine.categories);
-
-        this.list.innerHTML = categories
-          .map(cat => `<div class="modal-option-btn" data-cat="${cat}">${cat}</div>`)
-          .join("");
-
-        this.list.querySelectorAll(".modal-option-btn").forEach(btn => {
-          btn.addEventListener("click", () => {
-            const selected = btn.dataset.cat;
-            this.ui.setCategory(selected);
-            this.hide();
-          });
-        });
-      }
-
-      bindBackdrop() {
-        this.modal.addEventListener("click", e => {
-          if (e.target === this.modal) this.hide();
-        });
-      }
-
-      show() {
-        this.modal.classList.remove("hidden");
-      }
-
-      hide() {
-        this.modal.classList.add("hidden");
-      }
-    }
-
-    /* ============================================================
-       CLASS: ToolbarController
-    ============================================================ */
-    class ToolbarController {
-      constructor(themeManager, modal) {
-        this.themeManager = themeManager;
-        this.modal = modal;
-      }
-
-      bind() {
-        const modeBtn = document.getElementById("modeBtn");
-        const themeBtn = document.getElementById("themeBtn");
-        const categoryBtn = document.getElementById("categoryBtn");
-
-        modeBtn.addEventListener("click", () => {
-          this.themeManager.toggleDarkMode();
-          this.addHaptic(modeBtn);
-        });
-
-        themeBtn.addEventListener("click", () => {
-          this.themeManager.cycleTheme();
-          this.addHaptic(themeBtn);
-        });
-
-        categoryBtn.addEventListener("click", () => {
-          this.modal.show();
-          this.addHaptic(categoryBtn);
-        });
-      }
-
-      addHaptic(el) {
-        el.classList.remove("haptic-tap");
-        void el.offsetWidth; // force reflow
-        el.classList.add("haptic-tap");
-      }
-    }
-
-    /* ============================================================
-       CLASS: UIBinder
-    ============================================================ */
-    class UIBinder {
-      constructor(engine) {
-        this.engine = engine;
-
-        this.fromEl = document.getElementById("fromUnit");
-        this.toEl = document.getElementById("toUnit");
-        this.inputEl = document.getElementById("inputValue");
-        this.resultEl = document.getElementById("result");
-        this.swapBtn = document.getElementById("swapBtn");
-
-        this.currentCategory = "volume";
-      }
-
-      init() {
-        this.setCategory(this.currentCategory);
-        this.bindEvents();
-      }
-
-      setCategory(category) {
-        this.currentCategory = category;
-
-        const units = this.engine.getUnits(category);
-        const defaults = this.engine.getDefaultUnits(category);
-
-        this.fromEl.innerHTML = units.map(u => `<option value="${u}">${u}</option>`).join("");
-        this.toEl.innerHTML = units.map(u => `<option value="${u}">${u}</option>`).join("");
-
-        if (defaults.length === 2) {
-          this.fromEl.value = defaults[0];
-          this.toEl.value = defaults[1];
-        }
-
-        this.updateResult();
-      }
-
-      bindEvents() {
-        this.inputEl.addEventListener("input", () => this.updateResult());
-        this.fromEl.addEventListener("change", () => this.updateResult());
-        this.toEl.addEventListener("change", () => this.updateResult());
-
-        this.swapBtn.addEventListener("click", () => {
-          const temp = this.fromEl.value;
-          this.fromEl.value = this.toEl.value;
-          this.toEl.value = temp;
-          this.updateResult();
-          this.addHaptic(this.swapBtn);
-        });
-      }
-
-      updateResult() {
-        const value = parseFloat(this.inputEl.value);
-        const from = this.fromEl.value;
-        const to = this.toEl.value;
-
-        const result = this.engine.convert(this.currentCategory, value, from, to);
-
-        if (result === "" || isNaN(result)) {
-          this.resultEl.textContent = "";
-          return;
-        }
-
-        this.resultEl.textContent = result.toFixed(2);
-        this.resultEl.classList.remove("result-updated");
-        void this.resultEl.offsetWidth;
-        this.resultEl.classList.add("result-updated");
-      }
-
-      addHaptic(el) {
-        el.classList.remove("haptic-tap");
-        void el.offsetWidth;
-        el.classList.add("haptic-tap");
-      }
-    }
-
-    /* ============================================================
-       APP INITIALIZATION
-    ============================================================ */
-    window.addEventListener("DOMContentLoaded", () => {
-      const engine = new ConverterEngine();
-      const ui = new UIBinder(engine);
-      const themeManager = new ThemeManager();
-      const modal = new CategoryModal(ui, engine);
-      const toolbar = new ToolbarController(themeManager, modal);
-
-      ui.init();
-      toolbar.bind();
-    });
-  </script>
-
-</body>
-</html>
+              EST
