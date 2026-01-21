@@ -500,13 +500,22 @@
         this.resultEl.textContent = `${result.toFixed(2)} ${prettyUnit}`;
         this.resultEl.classList.add("result-updated");
 
-        if (this.currentCategory === "volume") {
-          const denominators = [2,3,4,6,8,16];
-          const frac = approximateFraction(result, denominators);
-          this.fractionEl.textContent = `≈ ${frac} ${prettyUnit}`;
-        } else {
-          this.fractionEl.textContent = "";
-        }
+if (this.currentCategory === "volume") {
+  const denominators = [2,3,4,6,8,16];
+
+  // Whole number → no decimals, no fraction
+  if (Number.isInteger(result)) {
+    this.resultEl.textContent = `${result} ${prettyUnit}`;
+    this.fractionEl.textContent = "";
+  } else {
+    // Not whole → decimals + fraction
+    this.resultEl.textContent = `${result.toFixed(2)} ${prettyUnit}`;
+    const frac = approximateFraction(result, denominators);
+    this.fractionEl.textContent = `≈ ${frac} ${prettyUnit}`;
+  }
+} else {
+  this.fractionEl.textContent = "";
+}
 
         if (this.currentCategory === "length") {
           this.roundBtn.style.display = "block";
