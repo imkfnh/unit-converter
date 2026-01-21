@@ -626,7 +626,8 @@ if (this.currentCategory === "volume") {
       setCategory(category) {
         this.currentCategory = category;
         this.populateUnits(category);
-        this.categoryBtn.textContent = category.charAt(0).toUpperCase() + category.slice(1);
+this.categoryBtn.textContent = "Category";
+
         this.updateResult();
       }
 
