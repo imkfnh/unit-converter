@@ -16,13 +16,43 @@
       background-color: #002B60;
       color: #72C7FC;
       transition: background 0.3s, color 0.3s;
-      padding-top: 130px; /* space for header */
-      padding-bottom: 90px; /* space for bottom toolbar */
+      padding-top: 130px;
+      padding-bottom: 90px;
     }
 
     h1 {
       text-align: center;
       margin-bottom: 20px;
+    }
+
+    /* ------------------------------
+       DARK MODE
+    ------------------------------ */
+    body.dark {
+      background-color: #0A1A33;
+      color: #CFE8FF;
+    }
+
+    body.dark .card {
+      background: #0F2A4F;
+      border-color: rgba(255,255,255,0.15);
+    }
+
+    body.dark input,
+    body.dark select {
+      background-color: #0F3A6A;
+      color: #CFE8FF;
+      border-color: #CFE8FF;
+    }
+
+    body.dark button {
+      background: linear-gradient(180deg, #4A6BB0, #324A7A);
+      color: #E8F1FF;
+    }
+
+    body.dark .bottom-toolbar {
+      background: #0A1A33;
+      border-top-color: rgba(255,255,255,0.2);
     }
 
     /* ------------------------------
@@ -71,7 +101,6 @@
       box-shadow: 0 2px 6px rgba(0,0,0,0.25);
     }
 
-    /* PNG icon inside button */
     .btn-icon {
       width: 22px;
       height: 22px;
@@ -205,7 +234,6 @@
 
     <h1>Unit Converter</h1>
 
-    <!-- CATEGORY SELECTOR -->
     <select id="category" onchange="updateUnits(); convert();">
       <option value="volume">Volume</option>
       <option value="temperature">Temperature</option>
@@ -216,7 +244,6 @@
       <option value="currency">Currency</option>
     </select>
 
-    <!-- INPUT -->
     <input 
       id="inputValue"
       type="text"
@@ -226,19 +253,14 @@
       oninput="convert()"
     >
 
-    <!-- FROM UNIT -->
     <select id="fromUnit" onchange="convert()"></select>
-
-    <!-- TO UNIT -->
     <select id="toUnit" onchange="convert()"></select>
 
-    <!-- SWAP BUTTON WITH PNG ICON -->
     <button onclick="swapUnits()">
       <img src="swap.png" class="btn-icon" onerror="this.style.display='none'; this.parentNode.textContent='swap';">
       Swap Units
     </button>
 
-    <!-- RESULT -->
     <div id="result"></div>
 
   </div>
@@ -249,19 +271,19 @@
     <div class="toolbar-left">
 
       <button class="toolbar-btn" onclick="toggleDarkMode()">
-        <img src="mode.png" class="toolbar-icon" 
+        <img src="mode.png" class="toolbar-icon"
              onerror="this.style.display='none'; this.parentNode.textContent='mode';">
       </button>
 
       <button class="toolbar-btn" onclick="openThemeMenu()">
-        <img src="theme.png" class="toolbar-icon" 
+        <img src="theme.png" class="toolbar-icon"
              onerror="this.style.display='none'; this.parentNode.textContent='theme';">
       </button>
 
     </div>
 
     <button class="toolbar-btn category-btn" onclick="scrollToCategory()">
-      <img src="category.png" class="toolbar-icon" 
+      <img src="category.png" class="toolbar-icon"
            onerror="this.style.display='none'; this.parentNode.textContent='category';">
     </button>
 
@@ -418,12 +440,22 @@
       document.body.classList.toggle("dark");
     }
 
+    let themeIndex = 0;
+    const themes = [
+      { bg: "#002B60", card: "#01356F" },
+      { bg: "#003B4F", card: "#015C6F" },
+      { bg: "#2B004F", card: "#3A006F" }
+    ];
+
     function openThemeMenu() {
-      alert("Theme menu coming soon!");
+      themeIndex = (themeIndex + 1) % themes.length;
+      document.body.style.backgroundColor = themes[themeIndex].bg;
+      document.querySelector(".card").style.backgroundColor = themes[themeIndex].card;
     }
 
     function scrollToCategory() {
-      window.scrollTo({ top: 0, behavior: "smooth" });
+      const cat = document.getElementById("category");
+      cat.scrollIntoView({ behavior: "smooth", block: "center" });
     }
 
     /* ------------------------------
