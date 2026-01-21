@@ -5,11 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Unit Converter</title>
   <link rel="manifest" href="manifest.json">
-
   <style>
-    /* ============================================================
-       GLOBAL STYLES
-    ============================================================ */
     body {
       font-family: Arial, sans-serif;
       padding: 20px;
@@ -19,45 +15,48 @@
       padding-top: 130px;
       padding-bottom: 90px;
     }
-
-    h1 {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-
-    /* ============================================================
-       DARK MODE
-    ============================================================ */
     body.dark {
       background-color: #0A1A33;
       color: #CFE8FF;
     }
-
-    body.dark .card {
-      background: #0F2A4F;
-      border-color: rgba(255,255,255,0.15);
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
     }
-
-    body.dark input,
-    body.dark select {
-      background-color: #0F3A6A;
-      color: #CFE8FF;
-      border-color: #CFE8FF;
+    .app-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 120px;
+      background: #001A3D;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.4);
     }
-
-    body.dark button {
-      background: linear-gradient(180deg, #4A6BB0, #324A7A);
-      color: #E8F1FF;
+    .header-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
     }
-
-    body.dark .bottom-toolbar {
-      background: #0A1A33;
-      border-top-color: rgba(255,255,255,0.2);
+    .card {
+      background: #01356F;
+      padding: 25px 20px;
+      border-radius: 16px;
+      max-width: 380px;
+      margin: 0 auto;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.35);
+      border: 1px solid rgba(255,255,255,0.08);
+      opacity: 0;
+      transform: translateY(10px);
+      animation: cardFade 0.4s ease forwards;
     }
-
-    /* ============================================================
-       INPUTS & SELECTS
-    ============================================================ */
+    @keyframes cardFade {
+      to { opacity: 1; transform: translateY(0); }
+    }
     input,
     select {
       padding: 12px;
@@ -75,17 +74,12 @@
       transition: box-shadow 0.2s ease, transform 0.1s ease;
       text-align-last: center;
     }
-
     input:focus,
     select:focus {
       outline: none;
       box-shadow: 0 0 12px rgba(114,199,252,0.7);
       transform: scale(1.03);
     }
-
-    /* ============================================================
-       BUTTONS + HAPTIC ANIMATION
-    ============================================================ */
     button {
       width: 100%;
       max-width: 320px;
@@ -105,65 +99,50 @@
       gap: 10px;
       cursor: pointer;
     }
-
     button:active {
       transform: scale(0.96);
       box-shadow: 0 2px 6px rgba(0,0,0,0.25);
     }
-
     .haptic-tap {
       animation: hapticTap 120ms ease-out;
     }
-
     @keyframes hapticTap {
       0% { transform: scale(1); }
       40% { transform: scale(0.94); }
       100% { transform: scale(1); }
     }
-
-    /* ============================================================
-       RESULT BOX (GLASSMORPHIC)
-    ============================================================ */
     .result-box {
       margin: 50px auto;
       padding: 24px;
       width: 80%;
       max-width: 320px;
-
       background: rgba(0,0,0,0.5);
       backdrop-filter: blur(50px);
       -webkit-backdrop-filter: blur(50px);
-
       border-radius: 22px;
       border: 1px solid rgba(255,255,255,0.25);
       box-shadow: 0 8px 30px rgba(0,0,0,0.45);
-
       text-align: center;
       animation: fadeIn 0.4s ease;
     }
-
     #result {
       font-size: 2.4rem;
       font-weight: bold;
       min-height: 2.4rem;
     }
-
     .result-gradient {
       background: linear-gradient(180deg, #A0C9FF 0%, #43B6FE 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
     }
-
     .result-updated {
       animation: resultFade 0.25s ease-out;
     }
-
     @keyframes resultFade {
       from { opacity: 0; transform: translateY(4px); }
       to   { opacity: 1; transform: translateY(0); }
     }
-
     .fraction-line {
       margin-top: 6px;
       text-align: center;
@@ -171,57 +150,6 @@
       color: #A8D9FF;
       opacity: 0.9;
     }
-
-    /* ============================================================
-       FIXED HEADER
-    ============================================================ */
-    .app-header {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 120px;
-      background: #001A3D;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 1000;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.4);
-    }
-
-    .header-img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      border-bottom: 1px solid rgba(255,255,255,0.1);
-    }
-
-    /* ============================================================
-       CARD LAYOUT
-    ============================================================ */
-    .card {
-      background: #01356F;
-      padding: 25px 20px;
-      border-radius: 16px;
-      max-width: 380px;
-      margin: 0 auto;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.35);
-      border: 1px solid rgba(255,255,255,0.08);
-      opacity: 0;
-      transform: translateY(10px);
-      animation: cardFade 0.4s ease forwards;
-    }
-
-    @keyframes cardFade {
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    /* ============================================================
-       BOTTOM TOOLBAR
-    ============================================================ */
     .bottom-toolbar {
       position: fixed;
       bottom: 0;
@@ -237,12 +165,10 @@
       box-shadow: 0 -4px 12px rgba(0,0,0,0.35);
       z-index: 999;
     }
-
     .toolbar-left {
       display: flex;
       gap: 18px;
     }
-
     .toolbar-btn {
       background: none;
       border: none;
@@ -252,30 +178,24 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 6px;
+      padding: 6px 10px;
       border-radius: 10px;
       transition: background 0.2s, transform 0.15s;
+      cursor: pointer;
     }
-
     .toolbar-btn:active {
       transform: scale(0.92);
       background: rgba(255,255,255,0.1);
     }
-
     .category-btn {
-      width: 60px;
-      height: 60px;
-      border-radius: 18px;
       background: linear-gradient(180deg, #3A5BA0, #2C447A);
+      color: #E8F1FF;
+      border-radius: 999px;
+      padding: 10px 24px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.4);
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      font-size: 1rem;
+      font-weight: 600;
     }
-
-    /* ============================================================
-       CATEGORY PICKER MODAL
-    ============================================================ */
     .modal-backdrop {
       position: fixed;
       inset: 0;
@@ -286,12 +206,10 @@
       z-index: 2000;
       transition: opacity 0.25s ease;
     }
-
     .modal-backdrop.hidden {
       opacity: 0;
       pointer-events: none;
     }
-
     .modal-sheet {
       width: 100%;
       max-width: 420px;
@@ -301,24 +219,20 @@
       box-shadow: 0 -6px 20px rgba(0,0,0,0.4);
       animation: slideUp 0.25s ease;
     }
-
     @keyframes slideUp {
       from { transform: translateY(40px); opacity: 0; }
       to   { transform: translateY(0); opacity: 1; }
     }
-
     .modal-sheet h2 {
       text-align: center;
       margin-bottom: 18px;
       color: #E8F1FF;
     }
-
     .modal-options {
       display: flex;
       flex-direction: column;
       gap: 12px;
     }
-
     .modal-option-btn {
       padding: 14px;
       border-radius: 12px;
@@ -330,70 +244,40 @@
       transition: background 0.2s, transform 0.1s;
       cursor: pointer;
     }
-
     .modal-option-btn:active {
       background: #013A78;
       transform: scale(0.97);
     }
   </style>
 </head>
-
 <body class="dark">
-
-  <!-- FIXED HEADER -->
   <header class="app-header">
     <img src="header.jpg" alt="Header Image" class="header-img">
   </header>
 
-  <!-- MAIN CARD -->
   <div class="card">
-
     <h1>Unit Converter</h1>
-
-    <input 
-      id="inputValue"
-      type="text"
-      inputmode="decimal"
-      pattern="[0-9]*"
-      placeholder="Enter value"
-    >
-
+    <input id="inputValue" type="text" inputmode="decimal" placeholder="Enter value">
     <select id="fromUnit"></select>
     <select id="toUnit"></select>
 
-    <!-- GLASS RESULT BOX -->
     <div class="result-box">
       <div id="result" class="result-gradient"></div>
       <div id="fractionResult" class="fraction-line"></div>
     </div>
 
-    <button id="swapBtn">
-      Swap Units
-    </button>
-
-    <button id="roundBtn" style="display:none;">
-      Round
-    </button>
-
+    <button id="swapBtn">Swap Units</button>
+    <button id="roundBtn" style="display:none;">Round</button>
   </div>
 
-  <!-- BOTTOM TOOLBAR -->
   <div class="bottom-toolbar">
-
     <div class="toolbar-left">
-
       <button class="toolbar-btn" id="modeBtn">Mode</button>
       <button class="toolbar-btn" id="themeBtn">Theme</button>
-
     </div>
-
-    <button class="toolbar-btn category-btn" id="categoryBtn">
-      Cat
-    </button>
-
+    <button class="toolbar-btn category-btn" id="categoryBtn">Category</button>
   </div>
 
-  <!-- CATEGORY PICKER MODAL -->
   <div id="categoryModal" class="modal-backdrop hidden">
     <div class="modal-sheet">
       <h2>Select Category</h2>
@@ -402,9 +286,6 @@
   </div>
 
   <script>
-    /* ============================================================
-       UNIT LABELS (for dropdowns)
-    ============================================================ */
     const unitLabels = {
       cups: "cups",
       ounces: "ounces",
@@ -413,41 +294,22 @@
       pints: "pints",
       quarts: "quarts",
       gallons: "gallons",
-
       celsius: "Celsius",
       fahrenheit: "Fahrenheit",
-
       grams: "grams",
       kilograms: "kilograms",
       pounds: "pounds",
-
       kmh: "kilometers per hour",
       mph: "miles per hour",
       knots: "knots",
-
       cm: "centimeters",
       m: "meters",
       inches: "inches",
       feet: "feet",
       km: "kilometers",
-      miles: "miles",
-
-      EUR: "Euro",
-      USD: "US Dollar",
-      GBP: "British Pound",
-      CAD: "Canadian Dollar",
-      AUD: "Australian Dollar",
-
-      UTC: "UTC",
-      MST: "Mountain Standard Time",
-      CST: "Central Standard Time",
-      EST: "Eastern Standard Time",
-      PST: "Pacific Standard Time"
+      miles: "miles"
     };
 
-    /* ============================================================
-       PRETTY UNIT ABBREVIATIONS (for result)
-    ============================================================ */
     const prettyUnits = {
       cups: "cups",
       ounces: "oz",
@@ -456,77 +318,52 @@
       pints: "pt",
       quarts: "qt",
       gallons: "gal",
-
       celsius: "°C",
       fahrenheit: "°F",
-
       grams: "g",
       kilograms: "kg",
       pounds: "lb",
-
       kmh: "km/h",
       mph: "mph",
       knots: "kn",
-
       cm: "cm",
       m: "m",
       inches: "in",
       feet: "ft",
       km: "km",
-      miles: "mi",
-
-      EUR: "EUR",
-      USD: "USD",
-      GBP: "GBP",
-      CAD: "CAD",
-      AUD: "AUD",
-
-      UTC: "UTC",
-      MST: "MST",
-      CST: "CST",
-      EST: "EST",
-      PST: "PST"
+      miles: "mi"
     };
 
-    /* ============================================================
-       CLASS: ConverterEngine
-    ============================================================ */
     class ConverterEngine {
       constructor() {
         this.categories = {
-          volume: ["cups", "ounces", "tablespoons", "teaspoons", "pints", "quarts", "gallons"],
+          volume: ["tablespoons", "teaspoons", "cups", "ounces", "pints", "quarts", "gallons"],
           temperature: ["celsius", "fahrenheit"],
           weight: ["grams", "kilograms", "ounces", "pounds"],
           speed: ["kmh", "mph", "knots"],
-          timezone: ["UTC", "MST", "CST", "EST", "PST"],
-          length: ["cm", "m", "inches", "feet", "km", "miles"],
-          currency: ["EUR", "USD", "GBP", "CAD", "AUD"]
+          length: ["cm", "m", "inches", "feet", "km", "miles"]
         };
-
         this.defaults = {
           volume: ["tablespoons", "cups"],
           temperature: ["celsius", "fahrenheit"],
           weight: ["kilograms", "pounds"],
           speed: ["kmh", "mph"],
-          timezone: ["UTC", "MST"],
-          length: ["cm", "inches"],
-          currency: ["EUR", "USD"]
+          length: ["cm", "inches"]
         };
       }
-
+      getCategories() {
+        return Object.keys(this.categories);
+      }
       getUnits(category) {
         return this.categories[category] || [];
       }
-
       getDefaultUnits(category) {
         return this.defaults[category] || [];
       }
-
       convert(category, value, from, to) {
         if (isNaN(value)) return "";
-
         switch (category) {
-          case "volume":
+          case "volume": {
             const vol = {
               cups: 1,
               ounces: 8,
@@ -537,13 +374,12 @@
               gallons: 0.0625
             };
             return value * (vol[to] / vol[from]);
-
+          }
           case "temperature":
             if (from === "celsius" && to === "fahrenheit") return value * 9/5 + 32;
             if (from === "fahrenheit" && to === "celsius") return (value - 32) * 5/9;
             return value;
-
-          case "weight":
+          case "weight": {
             const wt = {
               grams: 1,
               kilograms: 1000,
@@ -551,18 +387,207 @@
               pounds: 453.592
             };
             return value * (wt[to] / wt[from]);
-
-          case "speed":
+          }
+          case "speed": {
             const spd = {
               kmh: 1,
               mph: 1.60934,
               knots: 1.852
             };
             return value * (spd[to] / spd[from]);
+          }
+          case "length": {
+            const len = {
+              cm: 0.01,
+              m: 1,
+              inches: 0.0254,
+              feet: 0.3048,
+              km: 1000,
+              miles: 1609.34
+            };
+            return value * (len[from] ? len[from] : 1) / (len[to] ? len[to] : 1);
+          }
+          default:
+            return value;
+        }
+      }
+    }
 
-          case "timezone":
-            const tz = {
-              UTC: 0,
-              MST: -7,
-              CST: -6,
-              EST
+    function approximateFraction(value, denominators) {
+      const whole = Math.floor(value);
+      const frac = value - whole;
+      if (frac === 0) return whole.toString();
+      let bestNum = 0;
+      let bestDen = 1;
+      let bestDiff = Infinity;
+      denominators.forEach(den => {
+        const num = Math.round(frac * den);
+        const diff = Math.abs(frac - num / den);
+        if (diff < bestDiff && num !== 0) {
+          bestDiff = diff;
+          bestNum = num;
+          bestDen = den;
+        }
+      });
+      if (bestNum === bestDen) return (whole + 1).toString();
+      if (whole === 0) return `${bestNum}/${bestDen}`;
+      return `${whole} ${bestNum}/${bestDen}`;
+    }
+
+    class UIBinder {
+      constructor(engine) {
+        this.engine = engine;
+        this.inputEl = document.getElementById("inputValue");
+        this.fromEl = document.getElementById("fromUnit");
+        this.toEl = document.getElementById("toUnit");
+        this.resultEl = document.getElementById("result");
+        this.fractionEl = document.getElementById("fractionResult");
+        this.swapBtn = document.getElementById("swapBtn");
+        this.roundBtn = document.getElementById("roundBtn");
+        this.categoryBtn = document.getElementById("categoryBtn");
+        this.categoryModal = document.getElementById("categoryModal");
+        this.categoryList = document.getElementById("categoryList");
+        this.themeBtn = document.getElementById("themeBtn");
+        this.modeBtn = document.getElementById("modeBtn");
+        this.currentCategory = "volume";
+        this.currentThemeIndex = 0;
+        this.themes = [
+          { bg: "#002B60", card: "#01356F" },
+          { bg: "#003B4F", card: "#015C6F" },
+          { bg: "#2B004F", card: "#3A006F" }
+        ];
+      }
+
+      init() {
+        this.populateCategoryModal();
+        this.setCategory("volume");
+        this.inputEl.addEventListener("input", () => this.updateResult());
+        this.fromEl.addEventListener("change", () => this.updateResult());
+        this.toEl.addEventListener("change", () => this.updateResult());
+        this.swapBtn.addEventListener("click", () => this.handleSwap());
+        this.roundBtn.addEventListener("click", () => this.handleRound());
+        this.categoryBtn.addEventListener("click", () => this.openCategoryModal());
+        this.categoryModal.addEventListener("click", (e) => {
+          if (e.target === this.categoryModal) this.closeCategoryModal();
+        });
+        this.themeBtn.addEventListener("click", () => this.cycleTheme());
+        this.modeBtn.addEventListener("click", () => this.toggleDarkMode());
+      }
+
+      populateUnits(category) {
+        const units = this.engine.getUnits(category);
+        this.fromEl.innerHTML = units.map(u => `<option value="${u}">${unitLabels[u] || u}</option>`).join("");
+        this.toEl.innerHTML = units.map(u => `<option value="${u}">${unitLabels[u] || u}</option>`).join("");
+        const [defFrom, defTo] = this.engine.getDefaultUnits(category);
+        if (defFrom) this.fromEl.value = defFrom;
+        if (defTo) this.toEl.value = defTo;
+      }
+
+      updateResult() {
+        const raw = this.inputEl.value.trim();
+        const value = parseFloat(raw);
+        const from = this.fromEl.value;
+        const to = this.toEl.value;
+        if (raw === "" || isNaN(value)) {
+          this.resultEl.textContent = "";
+          this.fractionEl.textContent = "";
+          return;
+        }
+        const result = this.engine.convert(this.currentCategory, value, from, to);
+        const prettyUnit = prettyUnits[to] || to;
+        this.resultEl.classList.remove("result-updated");
+        void this.resultEl.offsetWidth;
+        this.resultEl.textContent = `${result.toFixed(2)} ${prettyUnit}`;
+        this.resultEl.classList.add("result-updated");
+
+        if (this.currentCategory === "volume") {
+          const denominators = [2,3,4,6,8,16];
+          const frac = approximateFraction(result, denominators);
+          this.fractionEl.textContent = `≈ ${frac} ${prettyUnit}`;
+        } else {
+          this.fractionEl.textContent = "";
+        }
+
+        if (this.currentCategory === "length") {
+          this.roundBtn.style.display = "block";
+        } else {
+          this.roundBtn.style.display = "none";
+        }
+      }
+
+      handleSwap() {
+        const temp = this.fromEl.value;
+        this.fromEl.value = this.toEl.value;
+        this.toEl.value = temp;
+        this.swapBtn.classList.add("haptic-tap");
+        setTimeout(() => this.swapBtn.classList.remove("haptic-tap"), 130);
+        this.updateResult();
+      }
+
+      handleRound() {
+        if (this.currentCategory !== "length") return;
+        const raw = this.inputEl.value.trim();
+        const value = parseFloat(raw);
+        if (raw === "" || isNaN(value)) return;
+        const from = this.fromEl.value;
+        const to = this.toEl.value;
+        const result = this.engine.convert(this.currentCategory, value, from, to);
+        const denominators = [2,3,4,5,8,16];
+        const frac = approximateFraction(result, denominators);
+        const prettyUnit = prettyUnits[to] || to;
+        this.fractionEl.textContent = `≈ ${frac} ${prettyUnit}`;
+        this.roundBtn.classList.add("haptic-tap");
+        setTimeout(() => this.roundBtn.classList.remove("haptic-tap"), 130);
+      }
+
+      populateCategoryModal() {
+        const cats = this.engine.getCategories();
+        this.categoryList.innerHTML = cats.map(c => `
+          <button class="modal-option-btn" data-cat="${c}">
+            ${c.charAt(0).toUpperCase() + c.slice(1)}
+          </button>
+        `).join("");
+        this.categoryList.addEventListener("click", (e) => {
+          const btn = e.target.closest(".modal-option-btn");
+          if (!btn) return;
+          const cat = btn.getAttribute("data-cat");
+          this.setCategory(cat);
+          this.closeCategoryModal();
+        });
+      }
+
+      setCategory(category) {
+        this.currentCategory = category;
+        this.populateUnits(category);
+        this.categoryBtn.textContent = category.charAt(0).toUpperCase() + category.slice(1);
+        this.updateResult();
+      }
+
+      openCategoryModal() {
+        this.categoryModal.classList.remove("hidden");
+      }
+
+      closeCategoryModal() {
+        this.categoryModal.classList.add("hidden");
+      }
+
+      cycleTheme() {
+        this.currentThemeIndex = (this.currentThemeIndex + 1) % this.themes.length;
+        const theme = this.themes[this.currentThemeIndex];
+        document.body.style.backgroundColor = theme.bg;
+        document.querySelector(".card").style.backgroundColor = theme.card;
+      }
+
+      toggleDarkMode() {
+        document.body.classList.toggle("dark");
+      }
+    }
+
+    window.addEventListener("DOMContentLoaded", () => {
+      const engine = new ConverterEngine();
+      const ui = new UIBinder(engine);
+      ui.init();
+    });
+  </script>
+</body>
+</html>
