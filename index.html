@@ -293,7 +293,7 @@
       teaspoons: "teaspoons",
       pints: "pints",
       quarts: "quarts",
-      gallons: "gallons",
+      gallons: "gallons", milliliters: "milliliters", 
       celsius: "Celsius",
       fahrenheit: "Fahrenheit",
       grams: "grams",
@@ -330,7 +330,7 @@
       teaspoons: "tsp",
       pints: "pt",
       quarts: "qt",
-      gallons: "gal",
+      gallons: "gal", milliliters: "ml", 
       celsius: "°C",
       fahrenheit: "°F",
       grams: "g",
@@ -363,7 +363,7 @@
     class ConverterEngine {
       constructor() {
         this.categories = {
-  volume: ["tablespoons", "teaspoons", "cups", "ounces", "pints", "quarts", "gallons"],
+  volume: ["tablespoons", "teaspoons", "cups", "ounces", "pints", "quarts", "gallons", "milliliters"], 
   temperature: ["celsius", "fahrenheit"],
   weight: ["grams", "kilograms", "ounces", "pounds"],
   speed: ["kmh", "mph", "knots"],
@@ -403,7 +403,7 @@ this.defaults = {
               teaspoons: 48,
               pints: 0.5,
               quarts: 0.25,
-              gallons: 0.0625
+              gallons: 0.0625, milliliters: 236.588 
             };
             return value * (vol[to] / vol[from]);
           }
@@ -426,10 +426,8 @@ this.defaults = {
               mph: 1.60934,
               knots: 1.852
             };
-// Convert from → km/h → to
-const kmhValue = value * spd[from];   // convert input to km/h
-return kmhValue / spd[to];            // convert km/h to target
-
+            const kmhValue = value * spd[from];   
+            return kmhValue / spd[to];       
           }
           case "length": {
   const len = {
