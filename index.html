@@ -12,7 +12,6 @@
       padding: 20px;
       background-color: #002B60;
       color: #72C7FC;
-      transition: background 0.3s, color 0.3s;
       padding-top: 130px;
       padding-bottom: 90px;
     }
@@ -20,28 +19,6 @@
     body.dark {
       background-color: #0A1A33;
       color: #CFE8FF;
-    }
-
-    body.dark .card {
-      background: #0F2A4F;
-      border-color: rgba(255,255,255,0.15);
-    }
-
-    body.dark input,
-    body.dark select {
-      background-color: #0F3A6A;
-      color: #CFE8FF;
-      border-color: #CFE8FF;
-    }
-
-    body.dark button {
-      background: linear-gradient(180deg, #4A6BB0, #324A7A);
-      color: #E8F1FF;
-    }
-
-    body.dark .bottom-toolbar {
-      background: #0A1A33;
-      border-top-color: rgba(255,255,255,0.2);
     }
 
     input,
@@ -72,7 +49,6 @@
       color: #E8F1FF;
       border: none;
       border-radius: 14px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.35);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -96,12 +72,6 @@
       font-size: 2.4rem;
       font-weight: bold;
       min-height: 2.4rem;
-    }
-
-    .result-gradient {
-      background: linear-gradient(180deg, #A0C9FF 0%, #43B6FE 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
     }
 
     .fraction-line {
@@ -152,11 +122,6 @@
       align-items: center;
       padding: 0 22px;
       z-index: 999;
-    }
-
-    .toolbar-left {
-      display: flex;
-      gap: 18px;
     }
 
     .toolbar-btn {
@@ -244,7 +209,7 @@
     <select id="toUnit"></select>
 
     <div class="result-box">
-      <div id="result" class="result-gradient"></div>
+      <div id="result"></div>
       <div id="fractionResult" class="fraction-line"></div>
     </div>
 
@@ -253,10 +218,8 @@
   </div>
 
   <div class="bottom-toolbar">
-    <div class="toolbar-left">
-      <button class="toolbar-btn" id="modeBtn">Mode</button>
-      <button class="toolbar-btn" id="themeBtn">Theme</button>
-    </div>
+    <button class="toolbar-btn" id="modeBtn">Mode</button>
+    <button class="toolbar-btn" id="themeBtn">Theme</button>
     <button class="toolbar-btn category-btn" id="categoryBtn">Category</button>
   </div>
 
@@ -267,6 +230,7 @@
     </div>
   </div>
 
+  <!-- ⭐ CLEAN, FULLY WORKING SCRIPT ⭐ -->
   <script>
     const unitLabels = {
       cups: "cups",
@@ -277,6 +241,17 @@
       quarts: "quarts",
       gallons: "gallons",
       milliliters: "milliliters",
+
+      sqft: "square foot (ft²)",
+      sqyd: "square yard (yd²)",
+      acre: "acre (ac)",
+      sqmi: "square mile (mi²)",
+      sqkm: "square kilometer (km²)",
+      sqin: "square inch (in²)",
+      sqmm: "square millimeter (mm²)",
+      sqcm: "square centimeter (cm²)",
+      sqm: "square meter (m²)",
+      hectare: "hectare (ha)",
 
       celsius: "Celsius",
       fahrenheit: "Fahrenheit",
@@ -306,18 +281,7 @@
       USD: "US Dollar",
       GBP: "British Pound",
       CAD: "Canadian Dollar",
-      AUD: "Australian Dollar",
-
-      sqft: "square foot (ft²)",
-      sqyd: "square yard (yd²)",
-      acre: "acre (ac)",
-      sqmi: "square mile (mi²)",
-      sqkm: "square kilometer (km²)",
-      sqin: "square inch (in²)",
-      sqmm: "square millimeter (mm²)",
-      sqcm: "square centimeter (cm²)",
-      sqm: "square meter (m²)",
-      hectare: "hectare (ha)"
+      AUD: "Australian Dollar"
     };
 
     const prettyUnits = {
@@ -329,6 +293,17 @@
       quarts: "qt",
       gallons: "gal",
       milliliters: "ml",
+
+      sqft: "ft²",
+      sqyd: "yd²",
+      acre: "ac",
+      sqmi: "mi²",
+      sqkm: "km²",
+      sqin: "in²",
+      sqmm: "mm²",
+      sqcm: "cm²",
+      sqm: "m²",
+      hectare: "ha",
 
       celsius: "°C",
       fahrenheit: "°F",
@@ -358,18 +333,7 @@
       USD: "USD",
       GBP: "GBP",
       CAD: "CAD",
-      AUD: "AUD",
-
-      sqft: "ft²",
-      sqyd: "yd²",
-      acre: "ac",
-      sqmi: "mi²",
-      sqkm: "km²",
-      sqin: "in²",
-      sqmm: "mm²",
-      sqcm: "cm²",
-      sqm: "m²",
-      hectare: "ha"
+      AUD: "AUD"
     };
 
     class ConverterEngine {
@@ -382,18 +346,7 @@
           timezone: ["UTC", "MST", "CST", "EST", "PST"],
           length: ["cm", "m", "inches", "feet", "km", "miles"],
           currency: ["EUR", "USD", "GBP", "CAD", "AUD"],
-          area: [
-            "sqft",
-            "sqyd",
-            "acre",
-            "sqmi",
-            "sqkm",
-            "sqin",
-            "sqmm",
-            "sqcm",
-            "sqm",
-            "hectare"
-          ]
+          area: ["sqft", "sqyd", "acre", "sqmi", "sqkm", "sqin", "sqmm", "sqcm", "sqm", "hectare"]
         };
 
         this.defaults = {
@@ -472,7 +425,7 @@
               km: 1000,
               miles: 1609.34
             };
-            return value * (len[from] / len[to]);
+            return value * len[from] / len[to];
           }
 
           case "timezone": {
@@ -484,17 +437,6 @@
               PST: -8
             };
             return value + (offsets[to] - offsets[from]);
-          }
-
-          case "currency": {
-            const rates = {
-              EUR: 1.0,
-              USD: 1.08,
-              GBP: 0.86,
-              CAD: 1.47,
-              AUD: 1.62
-            };
-            return value * (rates[to] / rates[from]);
           }
 
           case "area": {
@@ -513,6 +455,20 @@
             const sqmValue = value * area[from];
             return sqmValue / area[to];
           }
+
+          case "currency": {
+            const rates = {
+              EUR: 1.0,
+              USD: 1.08,
+              GBP: 0.86,
+              CAD: 1.47,
+              AUD: 1.62
+            };
+            return value * (rates[to] / rates[from]);
+          }
+
+          default:
+            return value;
         }
       }
     }
@@ -544,7 +500,6 @@
     class UIBinder {
       constructor(engine) {
         this.engine = engine;
-
         this.inputEl = document.getElementById("inputValue");
         this.fromEl = document.getElementById("fromUnit");
         this.toEl = document.getElementById("toUnit");
@@ -557,15 +512,8 @@
         this.categoryList = document.getElementById("categoryList");
         this.themeBtn = document.getElementById("themeBtn");
         this.modeBtn = document.getElementById("modeBtn");
-
         this.currentCategory = "volume";
         this.currentThemeIndex = 0;
-
-        this.themes = [
-          { bg: "#002B60", card: "#01356F" },
-          { bg: "#003B4F", card: "#015C6F" },
-          { bg: "#2B004F", card: "#3A006F" }
-        ];
       }
 
       init() {
@@ -575,5 +523,30 @@
         this.inputEl.addEventListener("input", () => this.updateResult());
         this.fromEl.addEventListener("change", () => this.updateResult());
         this.toEl.addEventListener("change", () => this.updateResult());
+        this.swapBtn.addEventListener("click", () => this.handleSwap());
+        this.roundBtn.addEventListener("click", () => this.handleRound());
+        this.categoryBtn.addEventListener("click", () => this.openCategoryModal());
+        this.categoryModal.addEventListener("click", (e) => {
+          if (e.target === this.categoryModal) this.closeCategoryModal();
+        });
+        this.themeBtn.addEventListener("click", () => this.cycleTheme());
+        this.modeBtn.addEventListener("click", () => this.toggleDarkMode());
+      }
 
-        this.swapBtn
+      populateUnits(category) {
+        const units = this.engine.getUnits(category);
+        this.fromEl.innerHTML = units.map(u => `<option value="${u}">${unitLabels[u]}</option>`).join("");
+        this.toEl.innerHTML = units.map(u => `<option value="${u}">${unitLabels[u]}</option>`).join("");
+
+        const [defFrom, defTo] = this.engine.getDefaultUnits(category);
+        this.fromEl.value = defFrom;
+        this.toEl.value = defTo;
+      }
+
+      updateResult() {
+        const raw = this.inputEl.value.trim();
+        const value = parseFloat(raw);
+        const from = this.fromEl.value;
+        const to = this.toEl.value;
+
+        if (raw === "" ||
