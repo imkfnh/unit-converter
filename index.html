@@ -293,7 +293,7 @@
       teaspoons: "teaspoons",
       pints: "pints",
       quarts: "quarts",
-      gallons: "gallons", milliliters: "milliliters", 
+      gallons: "gallons", milliliters: "milliliters",  sqft: "square foot (ft²)", sqyd: "square yard (yd²)", acre: "acre (ac)", sqmi: "square mile (mi²)", sqkm: "square kilometer (km²)", sqin: "square inch (in²)", sqmm: "square millimeter (mm²)", sqcm: "square centimeter (cm²)", sqm: "square meter (m²)", hectare: "hectare (ha)", 
       celsius: "Celsius",
       fahrenheit: "Fahrenheit",
       grams: "grams",
@@ -362,7 +362,7 @@
 
     class ConverterEngine {
       constructor() {
-        this.categories = {
+        this.categories = {   volume: ["tablespoons", "teaspoons", "cups", "ounces", "pints", "quarts", "gallons", "milliliters"],   temperature: ["celsius", "fahrenheit"],   weight: ["grams", "kilograms", "ounces", "pounds"],   speed: ["kmh", "mph", "knots"],   timezone: ["UTC", "MST", "CST", "EST", "PST"],   length: ["cm", "m", "inches", "feet", "km", "miles"],   currency: ["EUR", "USD", "GBP", "CAD", "AUD"],   area: [ "sqft", "sqyd", "acre", "sqmi", "sqkm", "sqin", "sqmm", "sqcm", "sqm", "hectare" ] }; volume: ["tablespoons", "teaspoons", "cups", "ounces", "pints", "quarts", "gallons", "milliliters"],   temperature: ["celsius", "fahrenheit"],   weight: ["grams", "kilograms", "ounces", "pounds"],   speed: ["kmh", "mph", "knots"],   timezone: ["UTC", "MST", "CST", "EST", "PST"],   length: ["cm", "m", "inches", "feet", "km", "miles"],   currency: ["EUR", "USD", "GBP", "CAD", "AUD"],   area: [ "ft²", "yd²", "acre", "mi²",     "km²", "in²", "mm²", "cm²", "m²", "hectare"] }; 
   volume: ["tablespoons", "teaspoons", "cups", "ounces", "pints", "quarts", "gallons", "milliliters"], 
   temperature: ["celsius", "fahrenheit"],
   weight: ["grams", "kilograms", "ounces", "pounds"],
@@ -379,7 +379,8 @@ this.defaults = {
   speed: ["kmh", "mph"],
   timezone: ["UTC", "MST"],
   length: ["cm", "inches"],
-  currency: ["EUR", "USD"]
+  currency: ["EUR", "USD"],
+  area: ["acre","mi²"]
 };
 
       }
@@ -452,7 +453,7 @@ case "timezone": {
   return value + (offsets[to] - offsets[from]);
 }
 
-case "currency": {
+case "area": {   // All area units expressed in square meters   const area = {     sqft: 0.092903,     sqyd: 0.836127,     acre: 4046.856422,     sqmi: 2589988.110336,     sqkm: 1000000,     sqin: 0.00064516,     sqmm: 0.000001,     sqcm: 0.0001,     sqm: 1,     hectare: 10000   };    const sqmValue = value * area[from];   return sqmValue / area[to]; }  case "currency": {
   const rates = {
     EUR: 1.0,
     USD: 1.08,
@@ -660,6 +661,4 @@ this.categoryBtn.textContent = "Category";
   </script>
 </body>
 </html>
-
-
 
