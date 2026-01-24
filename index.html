@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Unit Converter</title>
   <link rel="manifest" href="manifest.json">
+
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -15,48 +16,34 @@
       padding-top: 130px;
       padding-bottom: 90px;
     }
+
     body.dark {
       background-color: #0A1A33;
       color: #CFE8FF;
     }
-    h1 {
-      text-align: center;
-      margin-bottom: 20px;
+
+    body.dark .card {
+      background: #0F2A4F;
+      border-color: rgba(255,255,255,0.15);
     }
-    .app-header {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 120px;
-      background: #001A3D;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 1000;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.4);
+
+    body.dark input,
+    body.dark select {
+      background-color: #0F3A6A;
+      color: #CFE8FF;
+      border-color: #CFE8FF;
     }
-    .header-img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      border-bottom: 1px solid rgba(255,255,255,0.1);
+
+    body.dark button {
+      background: linear-gradient(180deg, #4A6BB0, #324A7A);
+      color: #E8F1FF;
     }
-    .card {
-      background: #01356F;
-      padding: 25px 20px;
-      border-radius: 16px;
-      max-width: 380px;
-      margin: 0 auto;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.35);
-      border: 1px solid rgba(255,255,255,0.08);
-      opacity: 0;
-      transform: translateY(10px);
-      animation: cardFade 0.4s ease forwards;
+
+    body.dark .bottom-toolbar {
+      background: #0A1A33;
+      border-top-color: rgba(255,255,255,0.2);
     }
-    @keyframes cardFade {
-      to { opacity: 1; transform: translateY(0); }
-    }
+
     input,
     select {
       padding: 12px;
@@ -74,12 +61,14 @@
       transition: box-shadow 0.2s ease, transform 0.1s ease;
       text-align-last: center;
     }
+
     input:focus,
     select:focus {
       outline: none;
       box-shadow: 0 0 12px rgba(114,199,252,0.7);
       transform: scale(1.03);
     }
+
     button {
       width: 100%;
       max-width: 320px;
@@ -99,18 +88,22 @@
       gap: 10px;
       cursor: pointer;
     }
+
     button:active {
       transform: scale(0.96);
       box-shadow: 0 2px 6px rgba(0,0,0,0.25);
     }
+
     .haptic-tap {
       animation: hapticTap 120ms ease-out;
     }
+
     @keyframes hapticTap {
       0% { transform: scale(1); }
       40% { transform: scale(0.94); }
       100% { transform: scale(1); }
     }
+
     .result-box {
       margin: 50px auto;
       padding: 24px;
@@ -125,24 +118,29 @@
       text-align: center;
       animation: fadeIn 0.4s ease;
     }
+
     #result {
       font-size: 2.4rem;
       font-weight: bold;
       min-height: 2.4rem;
     }
+
     .result-gradient {
       background: linear-gradient(180deg, #A0C9FF 0%, #43B6FE 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
     }
+
     .result-updated {
       animation: resultFade 0.25s ease-out;
     }
+
     @keyframes resultFade {
       from { opacity: 0; transform: translateY(4px); }
       to   { opacity: 1; transform: translateY(0); }
     }
+
     .fraction-line {
       margin-top: 6px;
       text-align: center;
@@ -150,6 +148,48 @@
       color: #A8D9FF;
       opacity: 0.9;
     }
+
+    .app-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 120px;
+      background: #001A3D;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.4);
+    }
+
+    .header-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .card {
+      background: #01356F;
+      padding: 25px 20px;
+      border-radius: 16px;
+      max-width: 380px;
+      margin: 0 auto;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.35);
+      border: 1px solid rgba(255,255,255,0.08);
+      opacity: 0;
+      transform: translateY(10px);
+      animation: cardFade 0.4s ease forwards;
+    }
+
+    @keyframes cardFade {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
     .bottom-toolbar {
       position: fixed;
       bottom: 0;
@@ -165,10 +205,12 @@
       box-shadow: 0 -4px 12px rgba(0,0,0,0.35);
       z-index: 999;
     }
+
     .toolbar-left {
       display: flex;
       gap: 18px;
     }
+
     .toolbar-btn {
       background: none;
       border: none;
@@ -183,10 +225,12 @@
       transition: background 0.2s, transform 0.15s;
       cursor: pointer;
     }
+
     .toolbar-btn:active {
       transform: scale(0.92);
       background: rgba(255,255,255,0.1);
     }
+
     .category-btn {
       background: linear-gradient(180deg, #3A5BA0, #2C447A);
       color: #E8F1FF;
@@ -196,6 +240,7 @@
       font-size: 1rem;
       font-weight: 600;
     }
+
     .modal-backdrop {
       position: fixed;
       inset: 0;
@@ -206,10 +251,12 @@
       z-index: 2000;
       transition: opacity 0.25s ease;
     }
+
     .modal-backdrop.hidden {
       opacity: 0;
       pointer-events: none;
     }
+
     .modal-sheet {
       width: 100%;
       max-width: 420px;
@@ -219,45 +266,63 @@
       box-shadow: 0 -6px 20px rgba(0,0,0,0.4);
       animation: slideUp 0.25s ease;
     }
+
     @keyframes slideUp {
       from { transform: translateY(40px); opacity: 0; }
       to   { transform: translateY(0); opacity: 1; }
     }
+
     .modal-sheet h2 {
       text-align: center;
       margin-bottom: 18px;
       color: #E8F1FF;
     }
+
     .modal-options {
       display: flex;
       flex-direction: column;
       gap: 12px;
     }
+
     .modal-option-btn {
       padding: 14px;
       border-radius: 12px;
       background: #02519C;
       color: #E8F1FF;
       font-size: 1.1rem;
-      text-align: center;
+      text-align: left;
       border: 1px solid rgba(255,255,255,0.15);
       transition: background 0.2s, transform 0.1s;
       cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 12px;
     }
+
     .modal-option-btn:active {
       background: #013A78;
       transform: scale(0.97);
     }
+
+    .cat-icon {
+      width: 28px;
+      height: 28px;
+      object-fit: contain;
+    }
   </style>
 </head>
+
 <body class="dark">
+
   <header class="app-header">
     <img src="header.jpeg" alt="Header Image" class="header-img">
   </header>
 
   <div class="card">
     <h1>Unit Converter</h1>
+
     <input id="inputValue" type="text" inputmode="decimal" placeholder="Enter value">
+
     <select id="fromUnit"></select>
     <select id="toUnit"></select>
 
@@ -293,34 +358,49 @@
       teaspoons: "teaspoons",
       pints: "pints",
       quarts: "quarts",
-      gallons: "gallons", milliliters: "milliliters",  sqft: "square foot (ft²)", sqyd: "square yard (yd²)", acre: "acre (ac)", sqmi: "square mile (mi²)", sqkm: "square kilometer (km²)", sqin: "square inch (in²)", sqmm: "square millimeter (mm²)", sqcm: "square centimeter (cm²)", sqm: "square meter (m²)", hectare: "hectare (ha)", 
+      gallons: "gallons",
+      milliliters: "milliliters",
+
       celsius: "Celsius",
       fahrenheit: "Fahrenheit",
+
       grams: "grams",
       kilograms: "kilograms",
       pounds: "pounds",
+
       kmh: "kilometers per hour",
       mph: "miles per hour",
       knots: "knots",
+
       cm: "centimeters",
       m: "meters",
       inches: "inches",
       feet: "feet",
       km: "kilometers",
       miles: "miles",
-      
+
       UTC: "UTC",
       MST: "Mountain Standard Time",
       CST: "Central Standard Time",
       EST: "Eastern Standard Time",
       PST: "Pacific Standard Time",
-      
+
       EUR: "Euro",
       USD: "US Dollar",
       GBP: "British Pound",
       CAD: "Canadian Dollar",
-      AUD: "Australian Dollar"
+      AUD: "Australian Dollar",
 
+      sqft: "square foot (ft²)",
+      sqyd: "square yard (yd²)",
+      acre: "acre (ac)",
+      sqmi: "square mile (mi²)",
+      sqkm: "square kilometer (km²)",
+      sqin: "square inch (in²)",
+      sqmm: "square millimeter (mm²)",
+      sqcm: "square centimeter (cm²)",
+      sqm: "square meter (m²)",
+      hectare: "hectare (ha)"
     };
 
     const prettyUnits = {
@@ -330,71 +410,102 @@
       teaspoons: "tsp",
       pints: "pt",
       quarts: "qt",
-      gallons: "gal", milliliters: "ml", 
+      gallons: "gal",
+      milliliters: "ml",
+
       celsius: "°C",
       fahrenheit: "°F",
+
       grams: "g",
       kilograms: "kg",
       pounds: "lb",
+
       kmh: "km/h",
       mph: "mph",
       knots: "kn",
+
       cm: "cm",
       m: "m",
       inches: "in",
       feet: "ft",
       km: "km",
       miles: "mi",
-      
+
       UTC: "UTC",
       MST: "MST",
       CST: "CST",
       EST: "EST",
       PST: "PST",
-      
+
       EUR: "EUR",
       USD: "USD",
       GBP: "GBP",
       CAD: "CAD",
-      AUD: "AUD"
-  
+      AUD: "AUD",
+
+      sqft: "ft²",
+      sqyd: "yd²",
+      acre: "ac",
+      sqmi: "mi²",
+      sqkm: "km²",
+      sqin: "in²",
+      sqmm: "mm²",
+      sqcm: "cm²",
+      sqm: "m²",
+      hectare: "ha"
     };
 
     class ConverterEngine {
       constructor() {
-        this.categories = {   volume: ["tablespoons", "teaspoons", "cups", "ounces", "pints", "quarts", "gallons", "milliliters"],   temperature: ["celsius", "fahrenheit"],   weight: ["grams", "kilograms", "ounces", "pounds"],   speed: ["kmh", "mph", "knots"],   timezone: ["UTC", "MST", "CST", "EST", "PST"],   length: ["cm", "m", "inches", "feet", "km", "miles"],   currency: ["EUR", "USD", "GBP", "CAD", "AUD"],   area: [ "sqft", "sqyd", "acre", "sqmi", "sqkm", "sqin", "sqmm", "sqcm", "sqm", "hectare" ] }; volume: ["tablespoons", "teaspoons", "cups", "ounces", "pints", "quarts", "gallons", "milliliters"],   temperature: ["celsius", "fahrenheit"],   weight: ["grams", "kilograms", "ounces", "pounds"],   speed: ["kmh", "mph", "knots"],   timezone: ["UTC", "MST", "CST", "EST", "PST"],   length: ["cm", "m", "inches", "feet", "km", "miles"],   currency: ["EUR", "USD", "GBP", "CAD", "AUD"],   area: [ "ft²", "yd²", "acre", "mi²",     "km²", "in²", "mm²", "cm²", "m²", "hectare"] }; 
-  volume: ["tablespoons", "teaspoons", "cups", "ounces", "pints", "quarts", "gallons", "milliliters"], 
-  temperature: ["celsius", "fahrenheit"],
-  weight: ["grams", "kilograms", "ounces", "pounds"],
-  speed: ["kmh", "mph", "knots"],
-  timezone: ["UTC", "MST", "CST", "EST", "PST"],
-  length: ["cm", "m", "inches", "feet", "km", "miles"],
-  currency: ["EUR", "USD", "GBP", "CAD", "AUD"]
-};
+        this.categories = {
+          volume: ["tablespoons", "teaspoons", "cups", "ounces", "pints", "quarts", "gallons", "milliliters"],
+          temperature: ["celsius", "fahrenheit"],
+          weight: ["grams", "kilograms", "ounces", "pounds"],
+          speed: ["kmh", "mph", "knots"],
+          timezone: ["UTC", "MST", "CST", "EST", "PST"],
+          length: ["cm", "m", "inches", "feet", "km", "miles"],
+          currency: ["EUR", "USD", "GBP", "CAD", "AUD"],
+          area: [
+            "sqft",
+            "sqyd",
+            "acre",
+            "sqmi",
+            "sqkm",
+            "sqin",
+            "sqmm",
+            "sqcm",
+            "sqm",
+            "hectare"
+          ]
+        };
 
-this.defaults = {
-  volume: ["tablespoons", "cups"],
-  temperature: ["celsius", "fahrenheit"],
-  weight: ["kilograms", "pounds"],
-  speed: ["kmh", "mph"],
-  timezone: ["UTC", "MST"],
-  length: ["cm", "inches"],
-  currency: ["EUR", "USD"],
-  area: ["acre","mi²"]
-};
-
+        this.defaults = {
+          volume: ["tablespoons", "milliliters"],
+          temperature: ["celsius", "fahrenheit"],
+          weight: ["kilograms", "pounds"],
+          speed: ["kmh", "mph"],
+          timezone: ["UTC", "MST"],
+          length: ["cm", "inches"],
+          currency: ["EUR", "USD"],
+          area: ["sqm", "sqft"]
+        };
       }
+
       getCategories() {
         return Object.keys(this.categories);
       }
+
       getUnits(category) {
         return this.categories[category] || [];
       }
+
       getDefaultUnits(category) {
         return this.defaults[category] || [];
       }
+
       convert(category, value, from, to) {
         if (isNaN(value)) return "";
+
         switch (category) {
           case "volume": {
             const vol = {
@@ -404,14 +515,17 @@ this.defaults = {
               teaspoons: 48,
               pints: 0.5,
               quarts: 0.25,
-              gallons: 0.0625, milliliters: 236.588 
+              gallons: 0.0625,
+              milliliters: 236.588
             };
             return value * (vol[to] / vol[from]);
           }
+
           case "temperature":
             if (from === "celsius" && to === "fahrenheit") return value * 9/5 + 32;
             if (from === "fahrenheit" && to === "celsius") return (value - 32) * 5/9;
             return value;
+
           case "weight": {
             const wt = {
               grams: 1,
@@ -421,244 +535,38 @@ this.defaults = {
             };
             return value * (wt[to] / wt[from]);
           }
+
           case "speed": {
             const spd = {
               kmh: 1,
               mph: 1.60934,
               knots: 1.852
             };
-            const kmhValue = value * spd[from];   
-            return kmhValue / spd[to];       
+            const kmhValue = value * spd[from];
+            return kmhValue / spd[to];
           }
+
           case "length": {
-  const len = {
-    cm: 0.01,
-    m: 1,
-    inches: 0.0254,
-    feet: 0.3048,
-    km: 1000,
-    miles: 1609.34
-  };
-  return value * (len[from] ? len[from] : 1) / (len[to] ? len[to] : 1);
-}
+            const len = {
+              cm: 0.01,
+              m: 1,
+              inches: 0.0254,
+              feet: 0.3048,
+              km: 1000,
+              miles: 1609.34
+            };
+            return value * (len[from] / len[to]);
+          }
 
-case "timezone": {
-  const offsets = {
-    UTC: 0,
-    MST: -7,
-    CST: -6,
-    EST: -5,
-    PST: -8
-  };
-  return value + (offsets[to] - offsets[from]);
-}
+          case "timezone": {
+            const offsets = {
+              UTC: 0,
+              MST: -7,
+              CST: -6,
+              EST: -5,
+              PST: -8
+            };
+            return value + (offsets[to] - offsets[from]);
+          }
 
-case "area": {   // All area units expressed in square meters   const area = {     sqft: 0.092903,     sqyd: 0.836127,     acre: 4046.856422,     sqmi: 2589988.110336,     sqkm: 1000000,     sqin: 0.00064516,     sqmm: 0.000001,     sqcm: 0.0001,     sqm: 1,     hectare: 10000   };    const sqmValue = value * area[from];   return sqmValue / area[to]; }  case "currency": {
-  const rates = {
-    EUR: 1.0,
-    USD: 1.08,
-    GBP: 0.86,
-    CAD: 1.47,
-    AUD: 1.62
-  };
-  return value * (rates[to] / rates[from]);
-}
-
-default:
-  return value;
-
-        }
-      }
-    }
-
-    function approximateFraction(value, denominators) {
-      const whole = Math.floor(value);
-      const frac = value - whole;
-      if (frac === 0) return whole.toString();
-      let bestNum = 0;
-      let bestDen = 1;
-      let bestDiff = Infinity;
-      denominators.forEach(den => {
-        const num = Math.round(frac * den);
-        const diff = Math.abs(frac - num / den);
-        if (diff < bestDiff && num !== 0) {
-          bestDiff = diff;
-          bestNum = num;
-          bestDen = den;
-        }
-      });
-      if (bestNum === bestDen) return (whole + 1).toString();
-      if (whole === 0) return `${bestNum}/${bestDen}`;
-      return `${whole} ${bestNum}/${bestDen}`;
-    }
-
-    class UIBinder {
-      constructor(engine) {
-        this.engine = engine;
-        this.inputEl = document.getElementById("inputValue");
-        this.fromEl = document.getElementById("fromUnit");
-        this.toEl = document.getElementById("toUnit");
-        this.resultEl = document.getElementById("result");
-        this.fractionEl = document.getElementById("fractionResult");
-        this.swapBtn = document.getElementById("swapBtn");
-        this.roundBtn = document.getElementById("roundBtn");
-        this.categoryBtn = document.getElementById("categoryBtn");
-        this.categoryModal = document.getElementById("categoryModal");
-        this.categoryList = document.getElementById("categoryList");
-        this.themeBtn = document.getElementById("themeBtn");
-        this.modeBtn = document.getElementById("modeBtn");
-        this.currentCategory = "volume";
-        this.currentThemeIndex = 0;
-        this.themes = [
-          { bg: "#002B60", card: "#01356F" },
-          { bg: "#003B4F", card: "#015C6F" },
-          { bg: "#2B004F", card: "#3A006F" }
-        ];
-      }
-
-      init() {
-        this.populateCategoryModal();
-        this.setCategory("volume");
-        this.inputEl.addEventListener("input", () => this.updateResult());
-        this.fromEl.addEventListener("change", () => this.updateResult());
-        this.toEl.addEventListener("change", () => this.updateResult());
-        this.swapBtn.addEventListener("click", () => this.handleSwap());
-        this.roundBtn.addEventListener("click", () => this.handleRound());
-        this.categoryBtn.addEventListener("click", () => this.openCategoryModal());
-        this.categoryModal.addEventListener("click", (e) => {
-          if (e.target === this.categoryModal) this.closeCategoryModal();
-        });
-        this.themeBtn.addEventListener("click", () => this.cycleTheme());
-        this.modeBtn.addEventListener("click", () => this.toggleDarkMode());
-      }
-
-      populateUnits(category) {
-        const units = this.engine.getUnits(category);
-        this.fromEl.innerHTML = units.map(u => `<option value="${u}">${unitLabels[u] || u}</option>`).join("");
-        this.toEl.innerHTML = units.map(u => `<option value="${u}">${unitLabels[u] || u}</option>`).join("");
-        const [defFrom, defTo] = this.engine.getDefaultUnits(category);
-        if (defFrom) this.fromEl.value = defFrom;
-        if (defTo) this.toEl.value = defTo;
-      }
-
-      updateResult() {
-        const raw = this.inputEl.value.trim();
-        const value = parseFloat(raw);
-        const from = this.fromEl.value;
-        const to = this.toEl.value;
-        if (raw === "" || isNaN(value)) {
-          this.resultEl.textContent = "";
-          this.fractionEl.textContent = "";
-          return;
-        }
-        const result = this.engine.convert(this.currentCategory, value, from, to);
-        const prettyUnit = prettyUnits[to] || to;
-        this.resultEl.classList.remove("result-updated");
-        void this.resultEl.offsetWidth;
-        this.resultEl.textContent = `${result.toFixed(2)} ${prettyUnit}`;
-        this.resultEl.classList.add("result-updated");
-
-if (this.currentCategory === "volume") {
-  const denominators = [2,3,4,6,8,16];
-
-  // Whole number → no decimals, no fraction
-  if (Number.isInteger(result)) {
-    this.resultEl.textContent = `${result} ${prettyUnit}`;
-    this.fractionEl.textContent = "";
-  } else {
-    // Not whole → decimals + fraction
-    this.resultEl.textContent = `${result.toFixed(2)} ${prettyUnit}`;
-    const frac = approximateFraction(result, denominators);
-    this.fractionEl.textContent = `≈ ${frac} ${prettyUnit}`;
-  }
-} else {
-  this.fractionEl.textContent = "";
-}
-
-        if (this.currentCategory === "length") {
-          this.roundBtn.style.display = "block";
-        } else {
-          this.roundBtn.style.display = "none";
-        }
-      }
-
-      handleSwap() {
-        const temp = this.fromEl.value;
-        this.fromEl.value = this.toEl.value;
-        this.toEl.value = temp;
-        this.swapBtn.classList.add("haptic-tap");
-        setTimeout(() => this.swapBtn.classList.remove("haptic-tap"), 130);
-        this.updateResult();
-      }
-
-      handleRound() {
-        if (this.currentCategory !== "length") return;
-        const raw = this.inputEl.value.trim();
-        const value = parseFloat(raw);
-        if (raw === "" || isNaN(value)) return;
-        const from = this.fromEl.value;
-        const to = this.toEl.value;
-        const result = this.engine.convert(this.currentCategory, value, from, to);
-        const denominators = [2,3,4,5,8,16];
-        const frac = approximateFraction(result, denominators);
-        const prettyUnit = prettyUnits[to] || to;
-        this.fractionEl.textContent = `≈ ${frac} ${prettyUnit}`;
-        this.roundBtn.classList.add("haptic-tap");
-        setTimeout(() => this.roundBtn.classList.remove("haptic-tap"), 130);
-      }
-
-      populateCategoryModal() {
-        const cats = this.engine.getCategories();
-        this.categoryList.innerHTML = cats.map(c => `
-        <button class="modal-option-btn" data-cat="${c}">
-          <img class="cat-icon" src="icons/${c}.png" onerror="this.style.display='none'">
-      ${c.charAt(0).toUpperCase() + c.slice(1)}
-  </button>
-  
-        `).join("");
-        this.categoryList.addEventListener("click", (e) => {
-          const btn = e.target.closest(".modal-option-btn");
-          if (!btn) return;
-          const cat = btn.getAttribute("data-cat");
-          this.setCategory(cat);
-          this.closeCategoryModal();
-        });
-      }
-
-      setCategory(category) {
-        this.currentCategory = category;
-        this.populateUnits(category);
-this.categoryBtn.textContent = "Category";
-
-        this.updateResult();
-      }
-
-      openCategoryModal() {
-        this.categoryModal.classList.remove("hidden");
-      }
-
-      closeCategoryModal() {
-        this.categoryModal.classList.add("hidden");
-      }
-
-      cycleTheme() {
-        this.currentThemeIndex = (this.currentThemeIndex + 1) % this.themes.length;
-        const theme = this.themes[this.currentThemeIndex];
-        document.body.style.backgroundColor = theme.bg;
-        document.querySelector(".card").style.backgroundColor = theme.card;
-      }
-
-      toggleDarkMode() {
-        document.body.classList.toggle("dark");
-      }
-    }
-
-    window.addEventListener("DOMContentLoaded", () => {
-      const engine = new ConverterEngine();
-      const ui = new UIBinder(engine);
-      ui.init();
-    });
-  </script>
-</body>
-</html>
-
+          case "currency": {
