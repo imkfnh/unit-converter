@@ -4,202 +4,18 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Unit Converter</title>
-  <link rel="manifest" href="manifest.json">
 
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      padding: 20px;
-      background-color: #002B60;
-      color: #72C7FC;
-      padding-top: 130px;
-      padding-bottom: 90px;
-    }
-
-    body.dark {
-      background-color: #0A1A33;
-      color: #CFE8FF;
-    }
-
-    input,
-    select {
-      padding: 12px;
-      font-size: 1.1rem;
-      margin: 8px 0;
-      width: 100%;
-      max-width: 320px;
-      background-color: #02519C;
-      color: #72C7FC;
-      border: 1px solid #72C7FC;
-      border-radius: 6px;
-      display: block;
-      margin-left: auto;
-      margin-right: auto;
-      text-align-last: center;
-    }
-
-    button {
-      width: 100%;
-      max-width: 320px;
-      padding: 14px 20px;
-      margin: 14px auto;
-      font-size: 1.15rem;
-      font-weight: 600;
-      background: linear-gradient(180deg, #3A5BA0, #2C447A);
-      color: #E8F1FF;
-      border: none;
-      border-radius: 14px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      cursor: pointer;
-    }
-
-    .result-box {
-      margin: 50px auto;
-      padding: 24px;
-      width: 80%;
-      max-width: 320px;
-      background: rgba(0,0,0,0.5);
-      backdrop-filter: blur(50px);
-      border-radius: 22px;
-      border: 1px solid rgba(255,255,255,0.25);
-      text-align: center;
-    }
-
-    #result {
-      font-size: 2.4rem;
-      font-weight: bold;
-      min-height: 2.4rem;
-    }
-
-    .fraction-line {
-      margin-top: 6px;
-      font-size: 1.2rem;
-      color: #A8D9FF;
-    }
-
-    .app-header {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 120px;
-      background: #001A3D;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 1000;
-    }
-
-    .header-img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      border-bottom: 1px solid rgba(255,255,255,0.1);
-    }
-
-    .card {
-      background: #01356F;
-      padding: 25px 20px;
-      border-radius: 16px;
-      max-width: 380px;
-      margin: 0 auto;
-      border: 1px solid rgba(255,255,255,0.08);
-    }
-
-    .bottom-toolbar {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      height: 70px;
-      background: #001A3D;
-      border-top: 1px solid rgba(255,255,255,0.15);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0 22px;
-      z-index: 999;
-    }
-
-    .toolbar-btn {
-      background: none;
-      border: none;
-      color: #A0C9FF;
-      font-size: 1rem;
-      font-weight: 600;
-      padding: 6px 10px;
-      border-radius: 10px;
-      cursor: pointer;
-    }
-
-    .category-btn {
-      background: linear-gradient(180deg, #3A5BA0, #2C447A);
-      color: #E8F1FF;
-      border-radius: 999px;
-      padding: 10px 24px;
-      font-size: 1rem;
-      font-weight: 600;
-    }
-
-    .modal-backdrop {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.45);
-      display: flex;
-      justify-content: center;
-      align-items: flex-end;
-      z-index: 2000;
-    }
-
-    .modal-backdrop.hidden {
-      opacity: 0;
-      pointer-events: none;
-    }
-
-    .modal-sheet {
-      width: 100%;
-      max-width: 420px;
-      background: #01356F;
-      padding: 25px;
-      border-radius: 22px 22px 0 0;
-    }
-
-    .modal-options {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    .modal-option-btn {
-      padding: 14px;
-      border-radius: 12px;
-      background: #02519C;
-      color: #E8F1FF;
-      font-size: 1.1rem;
-      border: 1px solid rgba(255,255,255,0.15);
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      cursor: pointer;
-    }
-
-    .cat-icon {
-      width: 28px;
-      height: 28px;
-      object-fit: contain;
-    }
-  </style>
+  <!-- CSS will go here later -->
 </head>
 
 <body class="dark">
 
+  <!-- Header -->
   <header class="app-header">
     <img src="header.jpeg" class="header-img">
   </header>
 
+  <!-- Main Card -->
   <div class="card">
     <h1>Unit Converter</h1>
 
@@ -217,12 +33,14 @@
     <button id="roundBtn" style="display:none;">Round</button>
   </div>
 
+  <!-- Bottom Toolbar -->
   <div class="bottom-toolbar">
     <button class="toolbar-btn" id="modeBtn">Mode</button>
     <button class="toolbar-btn" id="themeBtn">Theme</button>
     <button class="toolbar-btn category-btn" id="categoryBtn">Category</button>
   </div>
 
+  <!-- Category Modal -->
   <div id="categoryModal" class="modal-backdrop hidden">
     <div class="modal-sheet">
       <h2>Select Category</h2>
@@ -230,316 +48,670 @@
     </div>
   </div>
 
-  <script>
-    const unitLabels = {
-      cups: "cups",
-      ounces: "ounces",
-      tablespoons: "tablespoons",
-      teaspoons: "teaspoons",
-      pints: "pints",
-      quarts: "quarts",
-      gallons: "gallons",
-      milliliters: "milliliters",
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    background-color: #002B60;
+    color: #72C7FC;
+    padding-top: 130px;
+    padding-bottom: 90px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
 
-      sqft: "square foot (ft²)",
-      sqyd: "square yard (yd²)",
-      acre: "acre (ac)",
-      sqmi: "square mile (mi²)",
-      sqkm: "square kilometer (km²)",
-      sqin: "square inch (in²)",
-      sqmm: "square millimeter (mm²)",
-      sqcm: "square centimeter (cm²)",
-      sqm: "square meter (m²)",
-      hectare: "hectare (ha)",
+  body.dark {
+    background-color: #0A1A33;
+    color: #CFE8FF;
+  }
 
-      celsius: "Celsius",
-      fahrenheit: "Fahrenheit",
+  /* Header */
+  .app-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 120px;
+    background: #001A3D;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
 
-      grams: "grams",
-      kilograms: "kilograms",
-      pounds: "pounds",
+  .header-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
 
-      kmh: "kilometers per hour",
-      mph: "miles per hour",
-      knots: "knots",
+  /* Main card */
+  .card {
+    background: #01356F;
+    padding: 25px 20px;
+    border-radius: 16px;
+    max-width: 380px;
+    margin: 0 auto;
+    border: 1px solid rgba(255,255,255,0.08);
+    transition: background-color 0.3s ease;
+  }
 
-      cm: "centimeters",
-      m: "meters",
-      inches: "inches",
-      feet: "feet",
-      km: "kilometers",
-      miles: "miles",
+  /* Inputs + selects */
+  input,
+  select {
+    padding: 12px;
+    font-size: 1.1rem;
+    margin: 8px 0;
+    width: 100%;
+    max-width: 320px;
+    background-color: #02519C;
+    color: #72C7FC;
+    border: 1px solid #72C7FC;
+    border-radius: 6px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    text-align-last: center;
+  }
 
-      UTC: "UTC",
-      MST: "Mountain Standard Time",
-      CST: "Central Standard Time",
-      EST: "Eastern Standard Time",
-      PST: "Pacific Standard Time",
+  /* Buttons */
+  button {
+    width: 100%;
+    max-width: 320px;
+    padding: 14px 20px;
+    margin: 14px auto;
+    font-size: 1.15rem;
+    font-weight: 600;
+    background: linear-gradient(180deg, #3A5BA0, #2C447A);
+    color: #E8F1FF;
+    border: none;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    cursor: pointer;
+    transition: transform 0.1s ease;
+  }
 
-      EUR: "Euro",
-      USD: "US Dollar",
-      GBP: "British Pound",
-      CAD: "Canadian Dollar",
-      AUD: "Australian Dollar"
+  button:active {
+    transform: scale(0.97);
+  }
+
+  /* Result box */
+  .result-box {
+    margin: 50px auto;
+    padding: 24px;
+    width: 80%;
+    max-width: 320px;
+    background: rgba(0,0,0,0.5);
+    backdrop-filter: blur(50px);
+    border-radius: 22px;
+    border: 1px solid rgba(255,255,255,0.25);
+    text-align: center;
+  }
+
+  #result {
+    font-size: 2.4rem;
+    font-weight: bold;
+    min-height: 2.4rem;
+  }
+
+  .fraction-line {
+    margin-top: 6px;
+    font-size: 1.2rem;
+    color: #A8D9FF;
+  }
+
+  /* Bottom toolbar */
+  .bottom-toolbar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 70px;
+    background: #001A3D;
+    border-top: 1px solid rgba(255,255,255,0.15);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 22px;
+    z-index: 999;
+  }
+
+  .toolbar-btn {
+    background: none;
+    border: none;
+    color: #A0C9FF;
+    font-size: 1rem;
+    font-weight: 600;
+    padding: 6px 10px;
+    border-radius: 10px;
+    cursor: pointer;
+  }
+
+  .category-btn {
+    background: linear-gradient(180deg, #3A5BA0, #2C447A);
+    color: #E8F1FF;
+    border-radius: 999px;
+    padding: 10px 24px;
+    font-size: 1rem;
+    font-weight: 600;
+  }
+
+  /* Modal */
+  .modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.45);
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    z-index: 2000;
+    transition: opacity 0.25s ease;
+  }
+
+  .modal-backdrop.hidden {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .modal-sheet {
+    width: 100%;
+    max-width: 420px;
+    background: #01356F;
+    padding: 25px;
+    border-radius: 22px 22px 0 0;
+    border-top: 1px solid rgba(255,255,255,0.15);
+  }
+
+  .modal-options {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .modal-option-btn {
+    padding: 14px;
+    border-radius: 12px;
+    background: #02519C;
+    color: #E8F1FF;
+    font-size: 1.1rem;
+    border: 1px solid rgba(255,255,255,0.15);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+  }
+
+  .cat-icon {
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
+  }
+</style>
+
+
+<script>
+/* -----------------------------
+   LABELS + PRETTY UNIT SYMBOLS
+------------------------------*/
+const unitLabels = {
+  cups: "cups",
+  ounces: "ounces",
+  tablespoons: "tablespoons",
+  teaspoons: "teaspoons",
+  pints: "pints",
+  quarts: "quarts",
+  gallons: "gallons",
+  milliliters: "milliliters",
+
+  sqft: "square foot (ft²)",
+  sqyd: "square yard (yd²)",
+  acre: "acre (ac)",
+  sqmi: "square mile (mi²)",
+  sqkm: "square kilometer (km²)",
+  sqin: "square inch (in²)",
+  sqmm: "square millimeter (mm²)",
+  sqcm: "square centimeter (cm²)",
+  sqm: "square meter (m²)",
+  hectare: "hectare (ha)",
+
+  celsius: "Celsius",
+  fahrenheit: "Fahrenheit",
+
+  grams: "grams",
+  kilograms: "kilograms",
+  pounds: "pounds",
+
+  kmh: "kilometers per hour",
+  mph: "miles per hour",
+  knots: "knots",
+
+  cm: "centimeters",
+  m: "meters",
+  inches: "inches",
+  feet: "feet",
+  km: "kilometers",
+  miles: "miles",
+
+  UTC: "UTC",
+  MST: "Mountain Standard Time",
+  CST: "Central Standard Time",
+  EST: "Eastern Standard Time",
+  PST: "Pacific Standard Time",
+
+  EUR: "Euro",
+  USD: "US Dollar",
+  GBP: "British Pound",
+  CAD: "Canadian Dollar",
+  AUD: "Australian Dollar"
+};
+
+const prettyUnits = {
+  cups: "cups",
+  ounces: "oz",
+  tablespoons: "tbsp",
+  teaspoons: "tsp",
+  pints: "pt",
+  quarts: "qt",
+  gallons: "gal",
+  milliliters: "ml",
+
+  sqft: "ft²",
+  sqyd: "yd²",
+  acre: "ac",
+  sqmi: "mi²",
+  sqkm: "km²",
+  sqin: "in²",
+  sqmm: "mm²",
+  sqcm: "cm²",
+  sqm: "m²",
+  hectare: "ha",
+
+  celsius: "°C",
+  fahrenheit: "°F",
+
+  grams: "g",
+  kilograms: "kg",
+  pounds: "lb",
+
+  kmh: "km/h",
+  mph: "mph",
+  knots: "kn",
+
+  cm: "cm",
+  m: "m",
+  inches: "in",
+  feet: "ft",
+  km: "km",
+  miles: "mi",
+
+  UTC: "UTC",
+  MST: "MST",
+  CST: "CST",
+  EST: "EST",
+  PST: "PST",
+
+  EUR: "EUR",
+  USD: "USD",
+  GBP: "GBP",
+  CAD: "CAD",
+  AUD: "AUD"
+};
+
+/* -----------------------------
+   CONVERTER ENGINE
+------------------------------*/
+class ConverterEngine {
+  constructor() {
+    this.categories = {
+      volume: ["tablespoons", "teaspoons", "cups", "ounces", "pints", "quarts", "gallons", "milliliters"],
+      temperature: ["celsius", "fahrenheit"],
+      weight: ["grams", "kilograms", "ounces", "pounds"],
+      speed: ["kmh", "mph", "knots"],
+      timezone: ["UTC", "MST", "CST", "EST", "PST"],
+      length: ["cm", "m", "inches", "feet", "km", "miles"],
+      currency: ["EUR", "USD", "GBP", "CAD", "AUD"],
+      area: ["sqft", "sqyd", "acre", "sqmi", "sqkm", "sqin", "sqmm", "sqcm", "sqm", "hectare"]
     };
 
-    const prettyUnits = {
-      cups: "cups",
-      ounces: "oz",
-      tablespoons: "tbsp",
-      teaspoons: "tsp",
-      pints: "pt",
-      quarts: "qt",
-      gallons: "gal",
-      milliliters: "ml",
-
-      sqft: "ft²",
-      sqyd: "yd²",
-      acre: "ac",
-      sqmi: "mi²",
-      sqkm: "km²",
-      sqin: "in²",
-      sqmm: "mm²",
-      sqcm: "cm²",
-      sqm: "m²",
-      hectare: "ha",
-
-      celsius: "°C",
-      fahrenheit: "°F",
-
-      grams: "g",
-      kilograms: "kg",
-      pounds: "lb",
-
-      kmh: "km/h",
-      mph: "mph",
-      knots: "kn",
-
-      cm: "cm",
-      m: "m",
-      inches: "in",
-      feet: "ft",
-      km: "km",
-      miles: "mi",
-
-      UTC: "UTC",
-      MST: "MST",
-      CST: "CST",
-      EST: "EST",
-      PST: "PST",
-
-      EUR: "EUR",
-      USD: "USD",
-      GBP: "GBP",
-      CAD: "CAD",
-      AUD: "AUD"
+    this.defaults = {
+      volume: ["tablespoons", "milliliters"],
+      temperature: ["celsius", "fahrenheit"],
+      weight: ["kilograms", "pounds"],
+      speed: ["kmh", "mph"],
+      timezone: ["UTC", "MST"],
+      length: ["cm", "inches"],
+      currency: ["EUR", "USD"],
+      area: ["sqm", "sqft"]
     };
+  }
 
-    class ConverterEngine {
-      constructor() {
-        this.categories = {
-          volume: ["tablespoons", "teaspoons", "cups", "ounces", "pints", "quarts", "gallons", "milliliters"],
-          temperature: ["celsius", "fahrenheit"],
-          weight: ["grams", "kilograms", "ounces", "pounds"],
-          speed: ["kmh", "mph", "knots"],
-          timezone: ["UTC", "MST", "CST", "EST", "PST"],
-          length: ["cm", "m", "inches", "feet", "km", "miles"],
-          currency: ["EUR", "USD", "GBP", "CAD", "AUD"],
-          area: ["sqft", "sqyd", "acre", "sqmi", "sqkm", "sqin", "sqmm", "sqcm", "sqm", "hectare"]
+  getCategories() {
+    return Object.keys(this.categories);
+  }
+
+  getUnits(category) {
+    return this.categories[category] || [];
+  }
+
+  getDefaultUnits(category) {
+    return this.defaults[category] || [];
+  }
+
+  convert(category, value, from, to) {
+    if (isNaN(value)) return "";
+
+    switch (category) {
+      case "volume": {
+        const vol = {
+          cups: 1,
+          ounces: 8,
+          tablespoons: 16,
+          teaspoons: 48,
+          pints: 0.5,
+          quarts: 0.25,
+          gallons: 0.0625,
+          milliliters: 236.588
         };
+        return value * (vol[to] / vol[from]);
+      }
 
-        this.defaults = {
-          volume: ["tablespoons", "milliliters"],
-          temperature: ["celsius", "fahrenheit"],
-          weight: ["kilograms", "pounds"],
-          speed: ["kmh", "mph"],
-          timezone: ["UTC", "MST"],
-          length: ["cm", "inches"],
-          currency: ["EUR", "USD"],
-          area: ["sqm", "sqft"]
+      case "temperature":
+        if (from === "celsius" && to === "fahrenheit") return value * 9/5 + 32;
+        if (from === "fahrenheit" && to === "celsius") return (value - 32) * 5/9;
+        return value;
+
+      case "weight": {
+        const wt = {
+          grams: 1,
+          kilograms: 1000,
+          ounces: 28.3495,
+          pounds: 453.592
         };
+        return value * (wt[to] / wt[from]);
       }
 
-      getCategories() {
-        return Object.keys(this.categories);
+      case "speed": {
+        const spd = {
+          kmh: 1,
+          mph: 1.60934,
+          knots: 1.852
+        };
+        const kmhValue = value * spd[from];
+        return kmhValue / spd[to];
       }
 
-      getUnits(category) {
-        return this.categories[category] || [];
+      case "length": {
+        const len = {
+          cm: 0.01,
+          m: 1,
+          inches: 0.0254,
+          feet: 0.3048,
+          km: 1000,
+          miles: 1609.34
+        };
+        return value * len[from] / len[to];
       }
 
-      getDefaultUnits(category) {
-        return this.defaults[category] || [];
+      case "timezone": {
+        const offsets = {
+          UTC: 0,
+          MST: -7,
+          CST: -6,
+          EST: -5,
+          PST: -8
+        };
+        return value + (offsets[to] - offsets[from]);
       }
 
-      convert(category, value, from, to) {
-        if (isNaN(value)) return "";
-
-        switch (category) {
-          case "volume": {
-            const vol = {
-              cups: 1,
-              ounces: 8,
-              tablespoons: 16,
-              teaspoons: 48,
-              pints: 0.5,
-              quarts: 0.25,
-              gallons: 0.0625,
-              milliliters: 236.588
-            };
-            return value * (vol[to] / vol[from]);
-          }
-
-          case "temperature":
-            if (from === "celsius" && to === "fahrenheit") return value * 9/5 + 32;
-            if (from === "fahrenheit" && to === "celsius") return (value - 32) * 5/9;
-            return value;
-
-          case "weight": {
-            const wt = {
-              grams: 1,
-              kilograms: 1000,
-              ounces: 28.3495,
-              pounds: 453.592
-            };
-            return value * (wt[to] / wt[from]);
-          }
-
-          case "speed": {
-            const spd = {
-              kmh: 1,
-              mph: 1.60934,
-              knots: 1.852
-            };
-            const kmhValue = value * spd[from];
-            return kmhValue / spd[to];
-          }
-
-          case "length": {
-            const len = {
-              cm: 0.01,
-              m: 1,
-              inches: 0.0254,
-              feet: 0.3048,
-              km: 1000,
-              miles: 1609.34
-            };
-            return value * len[from] / len[to];
-          }
-
-          case "timezone": {
-            const offsets = {
-              UTC: 0,
-              MST: -7,
-              CST: -6,
-              EST: -5,
-              PST: -8
-            };
-            return value + (offsets[to] - offsets[from]);
-          }
-
-          case "area": {
-            const area = {
-              sqft: 0.092903,
-              sqyd: 0.836127,
-              acre: 4046.856422,
-              sqmi: 2589988.110336,
-              sqkm: 1000000,
-              sqin: 0.00064516,
-              sqmm: 0.000001,
-              sqcm: 0.0001,
-              sqm: 1,
-              hectare: 10000
-            };
-            const sqmValue = value * area[from];
-            return sqmValue / area[to];
-          }
-
-          case "currency": {
-            const rates = {
-              EUR: 1.0,
-              USD: 1.08,
-              GBP: 0.86,
-              CAD: 1.47,
-              AUD: 1.62
-            };
-            return value * (rates[to] / rates[from]);
-          }
-
-          default:
-            return value;
-        }
+      case "area": {
+        const area = {
+          sqft: 0.092903,
+          sqyd: 0.836127,
+          acre: 4046.856422,
+          sqmi: 2589988.110336,
+          sqkm: 1000000,
+          sqin: 0.00064516,
+          sqmm: 0.000001,
+          sqcm: 0.0001,
+          sqm: 1,
+          hectare: 10000
+        };
+        const sqmValue = value * area[from];
+        return sqmValue / area[to];
       }
+
+      case "currency": {
+        const rates = {
+          EUR: 1.0,
+          USD: 1.08,
+          GBP: 0.86,
+          CAD: 1.47,
+          AUD: 1.62
+        };
+        return value * (rates[to] / rates[from]);
+      }
+
+      default:
+        return value;
+    }
+  }
+}
+
+/* -----------------------------
+   FRACTION APPROXIMATION
+------------------------------*/
+function approximateFraction(value, denominators) {
+  const whole = Math.floor(value);
+  const frac = value - whole;
+  if (frac === 0) return whole.toString();
+
+  let bestNum = 0;
+  let bestDen = 1;
+  let bestDiff = Infinity;
+
+  denominators.forEach(den => {
+    const num = Math.round(frac * den);
+    const diff = Math.abs(frac - num / den);
+    if (diff < bestDiff && num !== 0) {
+      bestDiff = diff;
+      bestNum = num;
+      bestDen = den;
+    }
+  });
+
+  if (bestNum === bestDen) return (whole + 1).toString();
+  if (whole === 0) return `${bestNum}/${bestDen}`;
+  return `${whole} ${bestNum}/${bestDen}`;
+}
+
+/* -----------------------------
+   UI BINDER
+------------------------------*/
+class UIBinder {
+  constructor(engine) {
+    this.engine = engine;
+
+    this.inputEl = document.getElementById("inputValue");
+    this.fromEl = document.getElementById("fromUnit");
+    this.toEl = document.getElementById("toUnit");
+    this.resultEl = document.getElementById("result");
+    this.fractionEl = document.getElementById("fractionResult");
+
+    this.swapBtn = document.getElementById("swapBtn");
+    this.roundBtn = document.getElementById("roundBtn");
+
+    this.categoryBtn = document.getElementById("categoryBtn");
+    this.categoryModal = document.getElementById("categoryModal");
+    this.categoryList = document.getElementById("categoryList");
+
+    this.themeBtn = document.getElementById("themeBtn");
+    this.modeBtn = document.getElementById("modeBtn");
+
+    this.currentCategory = "volume";
+    this.currentThemeIndex = 0;
+  }
+
+  init() {
+    this.populateCategoryModal();
+    this.setCategory("volume");
+
+    this.inputEl.addEventListener("input", () => this.updateResult());
+    this.fromEl.addEventListener("change", () => this.updateResult());
+    this.toEl.addEventListener("change", () => this.updateResult());
+
+    this.swapBtn.addEventListener("click", () => this.handleSwap());
+    this.roundBtn.addEventListener("click", () => this.handleRound());
+
+    this.categoryBtn.addEventListener("click", () => this.openCategoryModal());
+    this.categoryModal.addEventListener("click", (e) => {
+      if (e.target === this.categoryModal) this.closeCategoryModal();
+    });
+
+    this.themeBtn.addEventListener("click", () => this.cycleTheme());
+    this.modeBtn.addEventListener("click", () => this.toggleDarkMode());
+  }
+
+  populateUnits(category) {
+    const units = this.engine.getUnits(category);
+
+    this.fromEl.innerHTML = units.map(u => `<option value="${u}">${unitLabels[u]}</option>`).join("");
+    this.toEl.innerHTML = units.map(u => `<option value="${u}">${unitLabels[u]}</option>`).join("");
+
+    const [defFrom, defTo] = this.engine.getDefaultUnits(category);
+    this.fromEl.value = defFrom;
+    this.toEl.value = defTo;
+  }
+
+  updateResult() {
+    const raw = this.inputEl.value.trim();
+    const value = parseFloat(raw);
+    const from = this.fromEl.value;
+    const to = this.toEl.value;
+
+    if (raw === "" || isNaN(value)) {
+      this.resultEl.textContent = "";
+      this.fractionEl.textContent = "";
+      return;
     }
 
-    function approximateFraction(value, denominators) {
-      const whole = Math.floor(value);
-      const frac = value - whole;
-      if (frac === 0) return whole.toString();
+    const result = this.engine.convert(this.currentCategory, value, from, to);
+    const prettyUnit = prettyUnits[to];
 
-      let bestNum = 0;
-      let bestDen = 1;
-      let bestDiff = Infinity;
+    this.resultEl.textContent = `${result.toFixed(2)} ${prettyUnit}`;
 
-      denominators.forEach(den => {
-        const num = Math.round(frac * den);
-        const diff = Math.abs(frac - num / den);
-        if (diff < bestDiff && num !== 0) {
-          bestDiff = diff;
-          bestNum = num;
-          bestDen = den;
-        }
-      });
+    if (this.currentCategory === "volume") {
+      const denominators = [2, 3, 4, 6, 8, 16];
 
-      if (bestNum === bestDen) return (whole + 1).toString();
-      if (whole === 0) return `${bestNum}/${bestDen}`;
-      return `${whole} ${bestNum}/${bestDen}`;
+      if (Number.isInteger(result)) {
+        this.resultEl.textContent = `${result} ${prettyUnit}`;
+        this.fractionEl.textContent = "";
+      } else {
+        const frac = approximateFraction(result, denominators);
+        this.fractionEl.textContent = `≈ ${frac} ${prettyUnit}`;
+      }
+    } else {
+      this.fractionEl.textContent = "";
     }
 
-    class UIBinder {
-      constructor(engine) {
-        this.engine = engine;
-        this.inputEl = document.getElementById("inputValue");
-        this.fromEl = document.getElementById("fromUnit");
-        this.toEl = document.getElementById("toUnit");
-        this.resultEl = document.getElementById("result");
-        this.fractionEl = document.getElementById("fractionResult");
-        this.swapBtn = document.getElementById("swapBtn");
-        this.roundBtn = document.getElementById("roundBtn");
-        this.categoryBtn = document.getElementById("categoryBtn");
-        this.categoryModal = document.getElementById("categoryModal");
-        this.categoryList = document.getElementById("categoryList");
-        this.themeBtn = document.getElementById("themeBtn");
-        this.modeBtn = document.getElementById("modeBtn");
-        this.currentCategory = "volume";
-        this.currentThemeIndex = 0;
-      }
+    if (this.currentCategory === "length") {
+      this.roundBtn.style.display = "block";
+    } else {
+      this.roundBtn.style.display = "none";
+    }
+  }
 
-      init() {
-        this.populateCategoryModal();
-        this.setCategory("volume");
+  handleSwap() {
+    const temp = this.fromEl.value;
+    this.fromEl.value = this.toEl.value;
+    this.toEl.value = temp;
+    this.updateResult();
+  }
 
-        this.inputEl.addEventListener("input", () => this.updateResult());
-        this.fromEl.addEventListener("change", () => this.updateResult());
-        this.toEl.addEventListener("change", () => this.updateResult());
-        this.swapBtn.addEventListener("click", () => this.handleSwap());
-        this.roundBtn.addEventListener("click", () => this.handleRound());
-        this.categoryBtn.addEventListener("click", () => this.openCategoryModal());
-        this.categoryModal.addEventListener("click", (e) => {
-          if (e.target === this.categoryModal) this.closeCategoryModal();
-        });
-        this.themeBtn.addEventListener("click", () => this.cycleTheme());
-        this.modeBtn.addEventListener("click", () => this.toggleDarkMode());
-      }
+  handleRound() {
+    if (this.currentCategory !== "length") return;
 
-      populateUnits(category) {
-        const units = this.engine.getUnits(category);
-        this.fromEl.innerHTML = units.map(u => `<option value="${u}">${unitLabels[u]}</option>`).join("");
-        this.toEl.innerHTML = units.map(u => `<option value="${u}">${unitLabels[u]}</option>`).join("");
+    const raw = this.inputEl.value.trim();
+    const value = parseFloat(raw);
+    if (raw === "" || isNaN(value)) return;
 
-        const [defFrom, defTo] = this.engine.getDefaultUnits(category);
-        this.fromEl.value = defFrom;
-        this.toEl.value = defTo;
-      }
+    const from = this.fromEl.value;
+    const to = this.toEl.value;
+    const result = this.engine.convert(this.currentCategory, value, from, to);
 
-      updateResult
+    const denominators = [2, 3, 4, 5, 8, 16];
+    const frac = approximateFraction(result, denominators);
+    const prettyUnit = prettyUnits[to];
+
+    this.fractionEl.textContent = `≈ ${frac} ${prettyUnit}`;
+  }
+
+  populateCategoryModal() {
+    const cats = this.engine.getCategories();
+
+    this.categoryList.innerHTML = cats
+      .map(c => `
+        <button class="modal-option-btn" data-cat="${c}">
+          <img class="cat-icon" src="icons/${c}.png" onerror="this.style.display='none'">
+          ${c.charAt(0).toUpperCase() + c.slice(1)}
+        </button>
+      `)
+      .join("");
+
+    this.categoryList.addEventListener("click", (e) => {
+      const btn = e.target.closest(".modal-option-btn");
+      if (!btn) return;
+      const cat = btn.getAttribute("data-cat");
+      this.setCategory(cat);
+      this.closeCategoryModal();
+    });
+  }
+
+  setCategory(category) {
+    this.currentCategory = category;
+    this.populateUnits(category);
+    this.categoryBtn.textContent = "Category";
+    this.updateResult();
+  }
+
+  openCategoryModal() {
+    this.categoryModal.classList.remove("hidden");
+  }
+
+  closeCategoryModal() {
+    this.categoryModal.classList.add("hidden");
+  }
+
+  cycleTheme() {
+    this.currentThemeIndex = (this.currentThemeIndex + 1) % 3;
+
+    const themes = [
+      { bg: "#002B60", card: "#01356F" },
+      { bg: "#003B4F", card: "#015C6F" },
+      { bg: "#2B004F", card: "#3A006F" }
+    ];
+
+    const theme = themes[this.currentThemeIndex];
+    document.body.style.backgroundColor = theme.bg;
+    document.querySelector(".card").style.backgroundColor = theme.card;
+  }
+
+  toggleDarkMode() {
+    document.body.classList.toggle("dark");
+  }
+}
+
+/* -----------------------------
+   INITIALIZE APP
+------------------------------*/
+window.addEventListener("DOMContentLoaded", () => {
+  const engine = new ConverterEngine();
+  const ui = new UIBinder(engine);
+  ui.init();
+});
+</script>
+
+</body>
+</html>
