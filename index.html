@@ -654,7 +654,7 @@ class UIBinder {
     this.categoryList.innerHTML = cats
       .map(c => `
         <button class="modal-option-btn" data-cat="${c}">
-          <img class="cat-icon" src="icons/${c}.png" onerror="this.style.display='none'">
+          <img class="cat-icon" src="icons/${c}.jpg" onerror="this.style.display='none'">
           ${c.charAt(0).toUpperCase() + c.slice(1)}
         </button>
       `)
@@ -715,3 +715,4 @@ window.addEventListener("DOMContentLoaded", () => {
 
 </body>
 </html>
+
