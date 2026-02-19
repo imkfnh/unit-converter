@@ -436,15 +436,28 @@ class ConverterEngine {
       /* -----------------------------
          WEIGHT
       ------------------------------*/
-      case "weight": {
-        const wt = {
-          grams: 1,
-          kilograms: 1000,
-          ounces: 28.3495,
-          pounds: 453.592
-        };
-        return value * (wt[to] / wt[from]);
-      }
+
+
+
+
+		
+		case "weight": {
+		  const wt = {
+		    grams: 1,
+		    kilograms: 1000,
+		    ounces: 28.3495,
+		    pounds: 453.592
+		  };
+		
+		  // Convert input to grams
+		  const gramsValue = value * wt[from];
+		
+		  // Convert grams to target unit
+		  return gramsValue / wt[to];
+		}
+
+
+
 
       /* -----------------------------
          SPEED — FIXED PRECISION
